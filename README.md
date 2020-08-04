@@ -1,5 +1,5 @@
 <div align="center">
-	<img src="readme/logo.svg" alt="Proffy logo" height="90">
+	<img src="README/logo.svg" alt="Proffy logo" height="90">
 </div>
 <p>
   <a href="#-sobre-o-projeto">💡 Sobre o projeto</a>
@@ -23,7 +23,7 @@
 # 💡 Sobre o projeto
 
 <div align="center">
-  <img src="readme/landing.svg" alt="Proffy" height="280">
+  <img src="README/landing.svg" alt="Proffy" height="280">
   <br/>
   <br/>
 </div>
