@@ -1,7 +1,8 @@
 import { Router } from 'express';
+import ClassesController from './controllers/Classes';
 
 const routes = Router();
 
-routes.get('/ping', (req, res) => res.send('Pong!'));
+routes.post('/classes', ClassesController.store);
 
 export default routes;
