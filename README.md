@@ -27,7 +27,7 @@
   <br/>
   <br/>
 </div>
-Desenvolvido durante a **Next Level Week #02**, créditos a [Rocketseat 🚀](https://github.com/Rocketseat)
+Desenvolvido durante a **Next Level Week #02** , créditos a [Rocketseat 🚀](https://github.com/Rocketseat)
 
 
 
@@ -39,7 +39,8 @@ Desenvolvido durante a **Next Level Week #02**, créditos a [Rocketseat 🚀](ht
 * React Native
 * Expo
 * TypeScript
-* 
+
+  
 
 # 🧪 Minhas alterações
 
@@ -119,6 +120,8 @@ yarn start
 **Back-end:**
 
 - `dev`: Roda a aplicação em modo de desenvolvimento
+- ``knex:migrate``: Roda as migrations
+- ``knex:seed``: Roda os seeds
 
 **Front-end:**
 
