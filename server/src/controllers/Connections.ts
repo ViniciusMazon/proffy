@@ -7,6 +7,14 @@ class Connections {
     await db('connections').insert({ user_id });
     return res.status(201).send();
   }
+
+  async index(req, res) {
+    const totalConnections = await db('connections')
+      .count('* as total');
+
+    const { total } = totalConnections[0];
+    return res.json({ total });
+  }
 }
 
 export default new Connections();
