@@ -27,7 +27,7 @@
 
 # 💡 Sobre o projeto
 
-O Proffy e foi criado em atenção ao dia nacional do profissional de educação (06 de agosto), trata-se de uma plataforma de estudos online que objetiva conectar alunos e professores. De forma que os professores podem determinar qual disciplina lecionam e em quais horários, bem como o preço da hora/aula.
+O Proffy e foi criado em atenção ao dia nacional dos profissionais de educação (06 de agosto), trata-se de uma plataforma de estudos online que objetiva conectar alunos e professores. De forma que os professores podem determinar qual disciplina lecionam e em quais horários, bem como o preço da hora/aula.
 
 
 
@@ -83,6 +83,8 @@ Rode utilizando o script
 ```bash
 yarn dev
 ```
+
+*obs: O workspace do insomnia está dentro do diretório readme.*
 
 📁./frontend
 
