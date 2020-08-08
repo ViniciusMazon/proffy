@@ -1,5 +1,8 @@
 <div align="center">
 	<img src="README/logo.svg" alt="Proffy logo" height="90">
+    <br/>
+    <br/>
+    <img src="README/mobile.gif" alt="Proffy mobile" height="600">
 </div>
 <p>
   <a href="#-sobre-o-projeto">💡 Sobre o projeto</a>
@@ -20,13 +23,20 @@
 </p>
 
 
+
+
 # 💡 Sobre o projeto
 
+O Proffy e foi criado em atenção ao dia nacional do profissional de educação (06 de agosto), trata-se de uma plataforma de estudos online que objetiva conectar alunos e professores. De forma que os professores podem determinar qual disciplina lecionam e em quais horários, bem como o preço da hora/aula.
+
+
+
 <div align="center">
-  <img src="README/landing.svg" alt="Proffy" height="280">
-  <br/>
-  <br/>
+    <img src="README/web.gif" alt="Proffy web" width="auto">
+    <br/>
 </div>
+
+
 Desenvolvido durante a **Next Level Week #02** , créditos a [Rocketseat 🚀](https://github.com/Rocketseat)
 
 
