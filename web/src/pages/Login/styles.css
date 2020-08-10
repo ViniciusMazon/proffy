@@ -1,5 +1,142 @@
 #page-login {
   width: 100vw;
   height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-areas: "header" "content" "footer";
   background: var(--color-background);
+}
+
+#logo-container {
+  grid-area: header;
+  background-color: var(--color-primary);
+  background-image: url(../../assets/images/logo-and-text-vertical.svg);
+  background-position: center center;
+  background-size: initial;
+  background-repeat: no-repeat;
+}
+
+.form-container {
+  grid-area: content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container form {
+  width: 35.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-container form h1 {
+  font: 600 3.6rem Poppins;
+  line-height: 4.2rem;
+  color: var(--color-text-title);
+  margin-bottom: 4.0rem;
+}
+
+.form-container form .custom-input {
+  height: 7.2rem;
+  border: 1px solid #E6E6F0;
+  font: 1.6rem Poppins;
+  padding-left: 2.4rem;
+  line-height: 2.4rem;
+}
+
+.form-container form #custom-input-top {
+  border-radius: 0.8rem 0.8rem 0rem 0rem;
+}
+
+.form-container form #custom-input-bottom {
+  border-radius: 0rem 0rem 0.8rem 0.8rem;
+}
+
+.remember-and-forget {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 2.4rem 0 4.0rem 0;
+}
+
+.remember-and-forget span {
+  display: flex;
+  align-items: center;
+  font: 1.4rem Poppins;
+  color: var(--color-text-complement);
+}
+
+.remember-and-forget span input[type=checkbox] {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.8rem;
+  margin-right: 1.6rem;
+}
+
+.remember-and-forget span input {
+  background: #FAFAFC;
+  border: 1px solid #E6E6F0;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.remember-and-forget a {
+  display: flex;
+  align-items: center;
+  font: 1.4rem Poppins;
+  color: var(--color-text-complement);
+  text-decoration: none;
+}
+
+.form-container form button {
+  height: 5.6rem;
+  font: 600 1.6rem Archivo;
+  color: var(--color-text-complement);
+  border: none;
+  border-radius: 0.8rem;
+  background: var(--color-button-background);
+}
+
+#page-login footer {
+  grid-area: footer;
+  width: 35.2rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+#page-login footer p {
+  font: 1.6rem Poppins;
+  color: var(--color-text-bas);
+  line-height: 2.6rem;
+}
+
+#page-login footer p+p {
+  font: 1.2rem Poppins;
+  color: var(--color-text-complement);
+  line-height: 2.0rem;
+}
+
+#page-login footer p+p img {
+  margin-left: 0.8rem;
+}
+
+#page-login footer p a {
+  font: 600 1.6rem Poppins;
+  line-height: 2.6rem;
+  color: var(--color-primary);
+}
+
+@media (min-width: 1100px) {
+  #page-login {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-areas: "header none" "header content" "header footer";
+  }
+  #page-login footer {
+    align-self: end;
+    margin-bottom: 5rem;
+  }
 }
