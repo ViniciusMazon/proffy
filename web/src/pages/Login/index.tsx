@@ -25,7 +25,7 @@ function Login() {
               <input type="checkbox" />
               <label>Lembrar-me</label>
             </span>
-            <a href="#">Esqueci minha senha</a>
+            <Link to="forgot-password">Esqueci minha senha</Link>
           </div>
 
           <button disabled={isButtonDisabled}>Entrar</button>

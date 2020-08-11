@@ -93,6 +93,10 @@
   text-decoration: none;
 }
 
+.remember-and-forget a:hover {
+  color: var(--color-primary);
+}
+
 .form-container form button {
   height: 5.6rem;
   font: 600 1.6rem Archivo;
