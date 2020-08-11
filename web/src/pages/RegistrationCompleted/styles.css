@@ -1,0 +1,65 @@
+#page-registration-completed {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-primary);
+  background-image: url(../../assets/images/success-background.svg);
+  background-position: center center;
+  background-size: initial;
+  background-repeat: no-repeat;
+}
+
+#page-registration-completed img {
+  margin-bottom: 4.0rem;
+}
+
+#page-registration-completed h1 {
+  font: 700 5.4rem Archivo;
+  text-align: center;
+  line-height: 60px;
+  color: #FFF;
+  margin-bottom: 2.4rem;
+}
+
+#page-registration-completed p {
+  width: 36.7rem;
+  font: 1.6rem Poppins;
+  line-height: 26px;
+  text-align: center;
+  color: var(--color-text-in-primary);
+  margin-bottom: 8rem;
+}
+
+#page-registration-completed a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5.6rem;
+  width: 19.7rem;
+  font: 600 1.6rem Archivo;
+  color: #FFF;
+  border: none;
+  border-radius: 0.8rem;
+  background: var(--color-secundary);
+  cursor: pointer;
+  margin-top: 4.0rem;
+  margin-bottom: 2rem;
+  text-decoration: none;
+}
+
+#page-registration-completed a:hover {
+  background: var(--color-secundary-dark);
+}
+
+@media (min-width: 1024px) {
+  #page-registration-completed {
+    background-size: cover;
+  }
+
+  #page-registration-completed h1 {
+    line-height: 42px;
+  }
+}
