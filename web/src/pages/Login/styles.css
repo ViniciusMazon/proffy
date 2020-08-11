@@ -40,10 +40,12 @@
 
 .form-container form .custom-input {
   height: 7.2rem;
+  width: 100%;
   border: 1px solid #E6E6F0;
   font: 1.6rem Poppins;
   padding-left: 2.4rem;
   line-height: 2.4rem;
+  background: #FFF;
 }
 
 .form-container form #custom-input-top {
@@ -73,6 +75,7 @@
   height: 2.4rem;
   border-radius: 0.8rem;
   margin-right: 1.6rem;
+  cursor: pointer;
 }
 
 .remember-and-forget span input {
@@ -93,9 +96,19 @@
 .form-container form button {
   height: 5.6rem;
   font: 600 1.6rem Archivo;
-  color: var(--color-text-complement);
+  color: #FFF;
   border: none;
   border-radius: 0.8rem;
+  background: var(--color-secundary);
+  cursor: pointer;
+}
+
+.form-container form button:hover {
+  background: var(--color-secundary-dark);
+}
+
+.form-container form button:disabled {
+  color: var(--color-text-complement);
   background: var(--color-button-background);
 }
 

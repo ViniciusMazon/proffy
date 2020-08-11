@@ -1,0 +1,17 @@
+.password-input-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.password-input-block input {
+  border: none;
+  width: 100%;
+  height: 100%;
+
+}
+
+.password-input-block img {
+  margin: 0 2.4rem;
+  cursor: pointer;
+}

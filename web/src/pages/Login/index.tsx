@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import PasswordInput from '../../components/PasswordInput';
 import heartPurple from '../../assets/images/icons/purple-heart.svg';
+
 
 import './styles.css';
 
 function Login() {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
   return (
     <div id="page-login">
       <div id="logo-container" />
@@ -13,7 +17,7 @@ function Login() {
         <form>
           <h1>Fazer login</h1>
           <input className="custom-input" id="custom-input-top" type="email" placeholder="E -mail" />
-          <input className="custom-input" id="custom-input-bottom" type="password" placeholder="Senha" />
+          <PasswordInput />
 
           <div className="remember-and-forget">
             <span>
@@ -23,7 +27,7 @@ function Login() {
             <a href="#">Esqueci minha senha</a>
           </div>
 
-          <button>Entrar</button>
+          <button disabled={isButtonDisabled}>Entrar</button>
         </form>
       </main>
 
@@ -36,7 +40,7 @@ function Login() {
             <img src={heartPurple} alt="Coração" />
         </p>
       </footer>
-    </div>
+    </div >
   );
 }
 
