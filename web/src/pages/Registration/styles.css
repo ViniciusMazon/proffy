@@ -1,0 +1,103 @@
+#page-registration {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 3fr;
+  grid-template-areas: "header" "content";
+  background: var(--color-background);
+}
+
+#page-registration #logo-container {
+  grid-area: header;
+  background-color: var(--color-primary);
+  background-image: url(../../assets/images/logo-and-text-vertical.svg);
+  background-position: center center;
+  background-size: initial;
+  background-repeat: no-repeat;
+}
+
+#page-registration .form-container {
+  grid-area: content;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#page-registration .form-container form {
+  width: 35.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#page-registration .form-container form img {
+  margin: 1.6rem 0 0 0;
+}
+
+#page-registration .form-container form h1 {
+  font: 600 3.6rem Poppins;
+  color: var(--color-text-title);
+  margin-bottom: 2.1rem;
+}
+
+#page-registration .form-container form p {
+  font: 1.6rem Poppins;
+  line-height: 26px;
+  width: 21.3rem;
+  color: var(--color-text-base);
+  margin-bottom: 4.0rem;
+}
+
+#page-registration .form-container form .custom-input {
+  height: 7.2rem;
+  width: 100%;
+  border: 1px solid #E6E6F0;
+  font: 1.6rem Poppins;
+  padding-left: 2.4rem;
+  line-height: 2.4rem;
+  background: #FFF;
+}
+
+#page-registration #page-registration .form-container form #custom-input-top {
+  border-radius: 0.8rem 0.8rem 0rem 0rem;
+}
+
+#page-registration #page-registration .form-container form #custom-input-bottom {
+  border-radius: 0rem 0rem 0.8rem 0.8rem;
+}
+
+#page-registration .form-container form button {
+  height: 5.6rem;
+  width: 100%;
+  font: 600 1.6rem Archivo;
+  color: #FFF;
+  border: none;
+  border-radius: 0.8rem;
+  background: var(--color-secundary);
+  cursor: pointer;
+  margin-top: 4.0rem;
+  margin-bottom: 2rem;
+}
+
+#page-registration .form-container form button:hover {
+  background: var(--color-secundary-dark);
+}
+
+#page-registration .form-container form button:disabled {
+  color: var(--color-text-complement);
+  background: var(--color-button-background);
+}
+
+@media (min-width: 1100px) {
+  #page-registration {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "content header";
+  }
+
+  #page-registration .form-container form img {
+    margin-bottom: 9.8rem;
+  }
+}

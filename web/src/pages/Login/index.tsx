@@ -5,6 +5,7 @@ import heartPurple from '../../assets/images/icons/purple-heart.svg';
 
 
 import './styles.css';
+import { Link } from 'react-router-dom';
 
 function Login() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -34,7 +35,7 @@ function Login() {
       <footer>
         <p>
           Não tem conta? <br />
-          <a href="#">Cadastre-se</a>
+          <Link to="registration">Cadastre-se</Link>
         </p>
         <p>É de graça
             <img src={heartPurple} alt="Coração" />
