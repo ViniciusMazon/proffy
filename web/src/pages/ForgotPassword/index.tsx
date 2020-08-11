@@ -7,11 +7,11 @@ import { Link } from 'react-router-dom';
 
 function ForgotPassword() {
   const history = useHistory();
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   function handleSubmitRegistration(e: FormEvent) {
     e.preventDefault();
-    history.push('/registration/welcome');
+    history.push('/forgot-password/success');
   }
 
   return (

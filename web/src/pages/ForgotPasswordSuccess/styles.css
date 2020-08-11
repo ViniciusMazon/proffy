@@ -1,4 +1,4 @@
-#page-registration-completed {
+#page-forgot-password-success {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -12,11 +12,11 @@
   background-repeat: no-repeat;
 }
 
-#page-registration-completed img {
+#page-forgot-password-success img {
   margin-bottom: 4.0rem;
 }
 
-#page-registration-completed h1 {
+#page-forgot-password-success h1 {
   font: 700 5.4rem Archivo;
   text-align: center;
   line-height: 60px;
@@ -24,8 +24,8 @@
   margin-bottom: 2.4rem;
 }
 
-#page-registration-completed p {
-  max-width: 36.7rem;
+#page-forgot-password-success p {
+  max-width: 47.2rem;
   font: 1.6rem Poppins;
   line-height: 26px;
   text-align: center;
@@ -33,7 +33,7 @@
   margin-bottom: 8rem;
 }
 
-#page-registration-completed a {
+#page-forgot-password-success a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,16 +50,15 @@
   text-decoration: none;
 }
 
-#page-registration-completed a:hover {
+#page-forgot-password-success a:hover {
   background: var(--color-secundary-dark);
 }
 
 @media (min-width: 1024px) {
-  #page-registration-completed {
+  #page-forgot-password-success {
     background-size: cover;
   }
-
-  #page-registration-completed h1 {
+  #page-forgot-password-success h1 {
     line-height: 42px;
   }
 }

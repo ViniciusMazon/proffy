@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import RegistrationCompleted from './pages/RegistrationCompleted';
 import ForgotPassword from './pages/ForgotPassword';
+import ForgotPasswordSuccess from './pages/ForgotPasswordSuccess';
 import Landing from './pages/Landing';
 import TeacherList from './pages/TeacherList';
 import TeacherForm from './pages/TeacherForm';
@@ -15,7 +16,8 @@ function Routes() {
       <Route exact path="/" component={Login} />
       <Route exact path="/registration" component={Registration} />
       <Route path="/registration/welcome" component={RegistrationCompleted} />
-      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route exact path="/forgot-password" component={ForgotPassword} />
+      <Route path="/forgot-password/success" component={ForgotPasswordSuccess} />
       <Route exact path="/home" component={Landing} />
       <Route path="/study" component={TeacherList} />
       <Route path="/give-classes" component={TeacherForm} />
