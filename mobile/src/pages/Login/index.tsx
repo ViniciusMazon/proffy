@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import { Image, ImageBackground, Text, TextInput, View } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { RectButton } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 import logoImg from '../../assets/images/logo.png';
 import background from '../../assets/images/background.png';
 import styles from './styles';
 
 function Login() {
+  const { navigate } = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
+  function handleNavigateToLanding() {
+    navigate('Landing');
+  }
 
   return (
     <View style={styles.container}>
@@ -54,7 +60,7 @@ function Login() {
           <Text style={styles.link}>Esqueci minha senha</Text>
         </View>
 
-        <RectButton style={styles.okButton}>
+        <RectButton style={styles.okButton} onPress={handleNavigateToLanding}>
           <Text style={styles.okButtonText}>Entrar</Text>
         </RectButton>
       </View>
