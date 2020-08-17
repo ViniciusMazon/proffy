@@ -16,6 +16,10 @@ function Login() {
     navigate('Registration');
   }
 
+  function handleNavigateToForgotPassword() {
+    navigate('ForgotPassword');
+  }
+
   function handleNavigateToLanding() {
     navigate('Landing');
   }
@@ -63,7 +67,9 @@ function Login() {
             />
             <Text style={styles.link}>Lembrar-me</Text>
           </View>
-          <Text style={styles.link}>Esqueci minha senha</Text>
+          <RectButton style={styles.linkButton} onPress={handleNavigateToForgotPassword}>
+            <Text style={styles.link}>Esqueci minha senha</Text>
+          </RectButton>
         </View>
 
         <RectButton style={styles.okButton} onPress={handleNavigateToLanding}>
