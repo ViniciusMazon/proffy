@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontFamily: 'Poppins_400Regular',
   },
+  linkButton: {
+    height: 20,
+  },
   input: {
     height: 54,
     backgroundColor: '#FFF',

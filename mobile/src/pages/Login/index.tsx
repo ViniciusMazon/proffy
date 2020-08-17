@@ -12,6 +12,10 @@ function Login() {
   const { navigate } = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
+  function handleNavigateToRegistration() {
+    navigate('Registration');
+  }
+
   function handleNavigateToLanding() {
     navigate('Landing');
   }
@@ -35,7 +39,9 @@ function Login() {
 
         <View style={styles.textGroup}>
           <Text style={styles.title}>Fazer login</Text>
-          <Text style={styles.linkPurple}>Criar uma conta</Text>
+          <RectButton style={styles.linkButton} onPress={handleNavigateToRegistration}>
+            <Text style={styles.linkPurple}>Criar uma conta</Text>
+          </RectButton>
         </View>
 
         <TextInput
