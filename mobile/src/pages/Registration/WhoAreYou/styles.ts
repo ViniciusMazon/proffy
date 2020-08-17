@@ -13,7 +13,9 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   linkButton: {
+    marginTop: 12,
     height: 20,
+    justifyContent: 'center',
   },
   title: {
     marginTop: 76,

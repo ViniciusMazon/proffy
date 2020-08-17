@@ -4,7 +4,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0f0f7',
-
   },
   banner: {
     width: '100%',
@@ -48,7 +47,11 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 3,
     marginRight: 8,
-  }
+  },
+  linkButton: {
+    height: 20,
+    justifyContent: 'center'
+  },
 });
 
 export default styles;
