@@ -3,14 +3,18 @@ import { Image, ImageBackground, Text, TextInput, View } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import logoImg from '../../assets/images/logo.png';
 import background from '../../assets/images/background.png';
 import styles from './styles';
+import api from '../../services/api';
 
 function Login() {
   const { navigate } = useNavigation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function handleNavigateToRegistration() {
     navigate('Registration');
@@ -20,8 +24,17 @@ function Login() {
     navigate('ForgotPassword');
   }
 
-  function handleNavigateToLanding() {
-    navigate('Landing');
+  async function handleLogin() {
+    const response = await api.post('/session', { email, password });
+    const token = response.data;
+
+    if (response.status === 200) {
+      await AsyncStorage.setItem('proffy_token', token.authorization);
+      navigate('Landing');
+    } else {
+      console.log('ERRO')
+      setPassword('');
+    }
   }
 
   return (
@@ -52,11 +65,15 @@ function Login() {
           style={styles.input}
           placeholder="E-mail"
           placeholderTextColor="#C1BCCC"
+          value={email}
+          onChangeText={text => setEmail(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Senha"
           placeholderTextColor="#C1BCCC"
+          value={password}
+          onChangeText={text => setPassword(text)}
         />
 
         <View style={styles.textGroup}>
@@ -72,7 +89,7 @@ function Login() {
           </RectButton>
         </View>
 
-        <RectButton style={styles.okButton} onPress={handleNavigateToLanding}>
+        <RectButton style={styles.okButton} onPress={handleLogin}>
           <Text style={styles.okButtonText}>Entrar</Text>
         </RectButton>
       </View>
