@@ -1,24 +1,54 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
+import api from '../../services/api';
+import { toast } from 'react-toastify';
+import { Link, useHistory } from 'react-router-dom';
 
 import PasswordInput from '../../components/PasswordInput';
 import heartPurple from '../../assets/images/icons/purple-heart.svg';
 
-
 import './styles.css';
-import { Link } from 'react-router-dom';
 
 function Login() {
+  const history = useHistory();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  async function handlerSingUp(e: FormEvent) {
+
+    e.preventDefault();
+    console.log(email, password);
+    const response = await api.post('/session', { email, password });
+    const token = response.data;
+
+    if (response.status === 200) {
+      localStorage.setItem('proffy_token', token.authorization);
+      history.push('/home');
+    } else {
+      console.log('ERRO')
+      toast.error(token.message);
+      setPassword('');
+    }
+
+  }
 
   return (
     <div id="page-login">
       <div id="logo-container" />
 
       <main className="form-container">
-        <form>
+        <form onSubmit={handlerSingUp}>
           <h1>Fazer login</h1>
-          <input className="custom-input" id="custom-input-top" type="email" placeholder="E -mail" />
-          <PasswordInput />
+          <input
+            className="custom-input"
+            id="custom-input-top"
+            type="email"
+            placeholder="E -mail"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+          <PasswordInput passwordValue={password} setFunction={setPassword} />
 
           <div className="remember-and-forget">
             <span>
@@ -28,7 +58,7 @@ function Login() {
             <Link to="forgot-password">Esqueci minha senha</Link>
           </div>
 
-          <button disabled={isButtonDisabled}>Entrar</button>
+          <button type="submit" disabled={isButtonDisabled}>Entrar</button>
         </form>
       </main>
 

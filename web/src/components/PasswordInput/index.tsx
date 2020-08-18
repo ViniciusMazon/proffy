@@ -5,7 +5,12 @@ import eyeOffIcon from '../../assets/images/icons/eye-off.svg';
 
 import './styles.css';
 
-function PasswordInput() {
+interface PasswordInputProps {
+  passwordValue: string,
+  setFunction: React.Dispatch<React.SetStateAction<string>>
+}
+
+const PasswordInput: React.FC<PasswordInputProps> = ({ passwordValue, setFunction }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 
@@ -15,7 +20,13 @@ function PasswordInput() {
 
   return (
     <div className="password-input-block custom-input" id="custom-input-bottom">
-      <input type={isPasswordVisible ? "text" : "password"} placeholder="Senha" />
+      <input
+        type={isPasswordVisible ? "text" : "password"}
+        placeholder="Senha"
+        value={passwordValue}
+        onChange={e => setFunction(e.target.value)}
+        required
+      />
       <img src={isPasswordVisible ? eyeOffIcon : eyeIcon} alt="eye" onClick={togglePasswordVisibility} />
     </div>
   );

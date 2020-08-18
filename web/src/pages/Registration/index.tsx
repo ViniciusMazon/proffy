@@ -41,7 +41,7 @@ function Registration() {
             type="email"
             placeholder="E-mail"
           />
-          <PasswordInput />
+          {/* <PasswordInput /> */}
           <button disabled={isButtonDisabled}>Concluir cadastro</button>
         </form>
       </main>
