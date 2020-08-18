@@ -12,10 +12,10 @@ class Session {
     if (userExists) {
       const isPasswordCorrect = await hash.compare(userExists.hash_password, password);
       if (!isPasswordCorrect) {
-        return res.json({ message: 'Usuário ou senha inválidos' });
+        return res.status(202).json({ message: 'Usuário ou senha inválidos' });
       }
     } else {
-      return res.json({ message: 'Usuário ou senha inválidos' });
+      return res.status(202).json({ message: 'Usuário ou senha inválidos' });
     }
 
     const token = jwt.create(userExists.id);
