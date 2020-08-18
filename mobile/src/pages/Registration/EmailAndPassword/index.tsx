@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 
 import backIcon from '../../../assets/images/icons/back.png'
 import styles from './styles';
+import api from '../../../services/api';
 
 function EmailAndPassword() {
+  const route = useRoute();
+  const routeParams: any = route.params;
   const { navigate, goBack } = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   function handleNavigateBack() {
     goBack();
   }
 
-  function handleNavigateNext() {
-    navigate('Success');
+  async function handleNavigateNext() {
+    const data = {
+      name: routeParams.name,
+      surname: routeParams.surname,
+      email,
+      password
+    }
+
+    const response = await api.post('/registration', data);
+    if (response.status === 201) {
+      navigate('Success');
+    } else {
+      console.log('ERRO');
+    }
   }
 
   return (
@@ -40,11 +57,15 @@ function EmailAndPassword() {
         style={[styles.input, { borderTopRightRadius: 8, borderTopLeftRadius: 8 }]}
         placeholder="E-mail"
         placeholderTextColor="#C1BCCC"
+        value={email}
+        onChangeText={text => setEmail(text)}
       />
       <TextInput
         style={[styles.input, { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 }]}
         placeholder="Senha"
         placeholderTextColor="#C1BCCC"
+        value={password}
+        onChangeText={text => setPassword(text)}
       />
 
       <RectButton style={styles.okButton} onPress={handleNavigateNext}>
