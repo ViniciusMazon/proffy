@@ -1,18 +1,29 @@
 import React, { FormEvent, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import api from '../../services/api';
+import { toast } from 'react-toastify';
 
 import PasswordInput from '../../components/PasswordInput';
 import backIcon from '../../assets/images/icons/back.svg';
 import './styles.css';
-import { Link } from 'react-router-dom';
+
 
 function Registration() {
   const history = useHistory();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  function handleSubmitRegistration(e: FormEvent) {
+  async function handleSubmitRegistration(e: FormEvent) {
     e.preventDefault();
-    history.push('/registration/welcome');
+    const response = await api.post('/registration', { name, surname, email, password });
+    if (response.status === 201) {
+      history.push('/registration/welcome');
+    } else {
+      toast.error(response.data.message);
+    }
   }
 
   return (
@@ -30,19 +41,28 @@ function Registration() {
             id="custom-input-top"
             type="text"
             placeholder="Nome"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
           />
           <input
             className="custom-input"
             type="text"
             placeholder="Sobrenome"
+            value={surname}
+            onChange={e => setSurname(e.target.value)}
+            required
           />
           <input
             className="custom-input"
             type="email"
             placeholder="E-mail"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
           />
-          {/* <PasswordInput /> */}
-          <button disabled={isButtonDisabled}>Concluir cadastro</button>
+          <PasswordInput passwordValue={password} setFunction={setPassword} />
+          <button type="submit" disabled={isButtonDisabled}>Concluir cadastro</button>
         </form>
       </main>
     </div >
