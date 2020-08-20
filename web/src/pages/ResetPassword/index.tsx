@@ -1,7 +1,8 @@
 import React, { FormEvent, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import api from '../../services/api';
 
+import api from '../../services/api';
 import './styles.css';
 
 interface matchProps {
@@ -14,11 +15,13 @@ interface matchProps {
 }
 
 function ResetPassword(props: matchProps) {
+  const history = useHistory();
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   async function handleResetPassword(e: FormEvent) {
+
     e.preventDefault();
 
     if (password !== passwordConfirm) {
@@ -26,12 +29,21 @@ function ResetPassword(props: matchProps) {
       return;
     }
 
-    const data = {
-      email: props.match.params.email,
-      token: props.match.params.token,
-      password
+    try {
+      const data = {
+        email: props.match.params.email,
+        token: props.match.params.token,
+        password
+      }
+      const response = await api.post('/reset-password', data);
+      if (response.status === 200) {
+        history.push('/reset-password/success');
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error('Ocorreu um erro na solicitação');
     }
-    await api.post('/reset-password', data);
   }
 
   return (

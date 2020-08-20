@@ -1,0 +1,43 @@
+#page-reset-password-success {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-primary);
+  background-image: url(../../assets/images/success-background.svg);
+  background-position: center center;
+  background-size: initial;
+  background-repeat: no-repeat;
+}
+
+#page-reset-password-success img {
+  margin-bottom: 4.0rem;
+}
+
+#page-reset-password-success h1 {
+  font: 700 5.4rem Archivo;
+  text-align: center;
+  line-height: 60px;
+  color: #FFF;
+  margin-bottom: 2.4rem;
+}
+
+#page-reset-password-success p {
+  max-width: 47.2rem;
+  font: 1.6rem Poppins;
+  line-height: 26px;
+  text-align: center;
+  color: var(--color-text-in-primary);
+  margin-bottom: 8rem;
+}
+
+@media (min-width: 1024px) {
+  #page-reset-password-success {
+    background-size: cover;
+  }
+  #page-reset-password-success h1 {
+    line-height: 42px;
+  }
+}

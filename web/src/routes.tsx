@@ -6,6 +6,7 @@ import Registration from './pages/Registration';
 import RegistrationCompleted from './pages/RegistrationCompleted';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import ResetPasswordSuccess from './pages/ResetPasswordSuccess';
 import ForgotPasswordSuccess from './pages/ForgotPasswordSuccess';
 import Landing from './pages/Landing';
 import TeacherList from './pages/TeacherList';
@@ -19,6 +20,7 @@ function Routes() {
       <Route path="/registration/welcome" component={RegistrationCompleted} />
       <Route exact path="/forgot-password" component={ForgotPassword} />
       <Route exact path="/reset-password/:email/:token" component={ResetPassword} />
+      <Route exact path="/reset-password/success" component={ResetPasswordSuccess} />
       <Route path="/forgot-password/success" component={ForgotPasswordSuccess} />
       <Route exact path="/home" component={Landing} />
       <Route path="/study" component={TeacherList} />
