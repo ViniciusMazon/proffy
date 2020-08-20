@@ -2,3 +2,4 @@ node_modules
 ./src/database/seeds/.gitkeep
 ./src/database/database.sqlite
 *.sqlite
+.env
