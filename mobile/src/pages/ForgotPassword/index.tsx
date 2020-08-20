@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ImageBackground, Image, TextInput } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -8,16 +8,28 @@ import backIcon from '../../assets/images/icons/back.png';
 import background from '../../assets/images/background.png';
 
 import styles from './styles';
+import api from '../../services/api';
 
 function ForgotPassword() {
   const { navigate, goBack } = useNavigation();
+  const [email, setEmail] = useState('');
 
   function handlerNavigateBack() {
     goBack();
   }
 
-  function handleNavigateToForgotPasswordSuccess() {
-    navigate('ForgotPasswordSuccess');
+  async function handleNavigateToForgotPasswordSuccess() {
+    try {
+      console.log(email)
+      const response = await api.post('/forgot-password', { email });
+      if (response.status === 200) {
+        navigate('ForgotPasswordSuccess');
+      } else {
+        alert('Ocorreu um erro enquanto tentávamos enviar o email, tente novamente');
+      }
+    } catch (error) {
+      alert('Ocorreu um erro enquanto tentávamos enviar o email, tente novamente');
+    }
   }
 
   return (
@@ -44,6 +56,8 @@ function ForgotPassword() {
           style={styles.input}
           placeholder="E-mail"
           placeholderTextColor="#C1BCCC"
+          value={email}
+          onChangeText={text => setEmail(text)}
         />
 
         <RectButton style={styles.okButton} onPress={handleNavigateToForgotPasswordSuccess}>
