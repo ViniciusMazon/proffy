@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import db from '../database/connections';
+import db from '../../database/connections';
 
 class Connections {
   async store(req, res) {
