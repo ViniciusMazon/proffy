@@ -40,24 +40,25 @@ class Session {
     try {
       const userExists = await userModel.getUserByEmail(email);
       if (!userExists) {
-        return res.status(400).json({ message: 'E-mail não cadastrado' });
+        return res.status(202).json({ message: 'E-mail não cadastrado' });
       }
 
       const token = crypto.randomBytes(20).toString('hex');
       await userModel.updatePasswordResetTokenAndExpires(userExists.id, token);
+      const link = `http://localhost:3000/reset-password/${userExists.email}/${token}`;
       await Mail.sendMail({
         to: `${userExists.name} <${userExists.email}>`,
         subject: 'Eita, esqueceu sua senha?',
         template: 'resetPassword',
         context: {
           name: userExists.name,
-          token: token,
+          link,
         },
       });
 
       return res.send();
     } catch (err) {
-      return res.status(400).json({ message: 'Erro ao tentar recuperar a senha, tente novamente mais tarde' });
+      return res.status(202).json({ message: 'Erro ao tentar recuperar a senha, tente novamente mais tarde' });
     }
   }
 
@@ -67,22 +68,25 @@ class Session {
 
       const userExists = await userModel.getUserByEmail(email);
       if (!userExists) {
-        return res.status(400).json({ message: 'E-mail não cadastrado' });
+        return res.status(202).json({ message: 'E-mail não cadastrado' });
       }
       if (token !== userExists.password_reset_token) {
-        return res.status(400).json({ message: 'Token inválido' });
+        return res.status(202).json({ message: 'Token inválido' });
       }
       const now = new Date().toLocaleString();
       if (now > userExists.password_reset_expires) {
-        return res.status(400).json({ message: 'O seu token inspirou, gere um novo' });
+        return res.status(202).json({ message: 'O seu token inspirou, gere um novo' });
       }
 
-      await userModel.updatePassword(userExists.id, password);
-
-      return res.send();
+      try {
+        await userModel.updatePassword(userExists.id, password);
+        return res.send();
+      } catch (error) {
+        return res.status(202).json({ message: 'Erro ao tentar redefinir senha, tente novamente' });
+      }
 
     } catch (err) {
-      return res.status(400).json({ message: 'Não foi possivel resetar a senha, tente novamente mais tarde' });
+      return res.status(202).json({ message: 'Não foi possível resetar a senha, tente novamente mais tarde' });
     }
   }
 }
