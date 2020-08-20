@@ -1,17 +1,26 @@
 import React, { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import api from '../../services/api';
 
 import backIcon from '../../assets/images/icons/back.svg';
 import './styles.css';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function ForgotPassword() {
   const history = useHistory();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [email, setEmail] = useState('');
 
-  function handleSubmitRegistration(e: FormEvent) {
+  async function handleSubmitRegistration(e: FormEvent) {
     e.preventDefault();
-    history.push('/forgot-password/success');
+
+    const response = await api.post('/forgot-password', { email });
+    if (response.status === 200) {
+      history.push('/forgot-password/success');
+    } else {
+      toast.error(response.data.message);
+    }
   }
 
   return (
@@ -28,6 +37,9 @@ function ForgotPassword() {
             className="custom-input"
             type="email"
             placeholder="E-mail"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
           />
           <button disabled={isButtonDisabled}>Enviar</button>
         </form>
