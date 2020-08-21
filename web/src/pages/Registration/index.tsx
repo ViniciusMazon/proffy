@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
@@ -10,11 +10,19 @@ import './styles.css';
 
 function Registration() {
   const history = useHistory();
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (name && surname && email && password) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [name, surname, email, password]);
 
   async function handleSubmitRegistration(e: FormEvent) {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
 import { Link, useHistory } from 'react-router-dom';
@@ -10,26 +10,45 @@ import './styles.css';
 
 function Login() {
   const history = useHistory();
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isRememberMe, setIsRememberMe] = useState(false);
+
+  useEffect(() => {
+    const validToken = localStorage.getItem('proffy_remember');
+    if (validToken) {
+      sessionStorage.setItem('proffy_token', validToken);
+      history.push('/home');
+    }
+  }, [history]);
+
+  useEffect(() => {
+    if (email && password) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [email, password]);
 
   async function handlerSingUp(e: FormEvent) {
-
     e.preventDefault();
     console.log(email, password);
     const response = await api.post('/session', { email, password });
     const token = response.data;
 
     if (response.status === 200) {
-      localStorage.setItem('proffy_token', token.authorization);
+
+      if (isRememberMe) {
+        localStorage.setItem('proffy_remember', token.authorization)
+      }
+      sessionStorage.setItem('proffy_token', token.authorization);
       history.push('/home');
     } else {
       console.log('ERRO')
       toast.error(token.message);
       setPassword('');
     }
-
   }
 
   return (
@@ -52,8 +71,8 @@ function Login() {
 
           <div className="remember-and-forget">
             <span>
-              <input type="checkbox" />
-              <label>Lembrar-me</label>
+              <input id="rememberme" type="checkbox" defaultChecked={isRememberMe} onChange={() => setIsRememberMe(!isRememberMe)} />
+              <label id="rememberme">Lembrar-me</label>
             </span>
             <Link to="forgot-password">Esqueci minha senha</Link>
           </div>

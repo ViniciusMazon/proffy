@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../../services/api';
 
@@ -9,8 +9,16 @@ import { toast } from 'react-toastify';
 
 function ForgotPassword() {
   const history = useHistory();
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    if (email) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [email]);
 
   async function handleSubmitRegistration(e: FormEvent) {
     e.preventDefault();
