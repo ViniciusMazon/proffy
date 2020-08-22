@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ImageBackground, Text, TextInput, View } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { RectButton } from 'react-native-gesture-handler';
@@ -12,9 +12,31 @@ import api from '../../services/api';
 
 function Login() {
   const { navigate } = useNavigation();
+  const [isButtonActive, setIsButtonActive] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    async function init() {
+      const tokenExists = await AsyncStorage.getItem('proffy_remember');
+      if (tokenExists) {
+        console.log('item existe');
+        await AsyncStorage.setItem('proffy_token', tokenExists);
+        navigate('Landing');
+      }
+    }
+
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (email && password) {
+      setIsButtonActive(true);
+    } else {
+      setIsButtonActive(false);
+    }
+  }, [email, password]);
 
   function handleNavigateToRegistration() {
     navigate('Registration');
@@ -25,10 +47,17 @@ function Login() {
   }
 
   async function handleLogin() {
+    if (!email || !password) {
+      return;
+    }
+
     const response = await api.post('/session', { email, password });
     const token = response.data;
 
     if (response.status === 200) {
+      if (toggleCheckBox) {
+        await AsyncStorage.setItem('proffy_remember', token.authorization);
+      }
       await AsyncStorage.setItem('proffy_token', token.authorization);
       navigate('Landing');
     } else {
@@ -62,6 +91,7 @@ function Login() {
         </View>
 
         <TextInput
+          keyboardType="email-address"
           style={styles.input}
           placeholder="E-mail"
           placeholderTextColor="#C1BCCC"
@@ -69,6 +99,7 @@ function Login() {
           onChangeText={text => setEmail(text)}
         />
         <TextInput
+          secureTextEntry={true}
           style={styles.input}
           placeholder="Senha"
           placeholderTextColor="#C1BCCC"
@@ -89,8 +120,16 @@ function Login() {
           </RectButton>
         </View>
 
-        <RectButton style={styles.okButton} onPress={handleLogin}>
-          <Text style={styles.okButtonText}>Entrar</Text>
+        <RectButton
+          style={[styles.okButton, { backgroundColor: isButtonActive ? '#04D361' : '#DCDCE5' }]}
+          onPress={handleLogin}
+          underlayColor={'#333'}
+        >
+          <Text
+            style={[styles.okButtonText, { color: isButtonActive ? '#FFF' : '#9C98A6' }]}
+          >
+            Entrar
+            </Text>
         </RectButton>
       </View>
     </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
@@ -8,8 +8,17 @@ import styles from './styles';
 
 function WhoAreYou() {
   const { navigate, goBack } = useNavigation();
+  const [isButtonActive, setIsButtonActive] = useState(false);
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
+
+  useEffect(() => {
+    if (name && surname) {
+      setIsButtonActive(true);
+    } else {
+      setIsButtonActive(false);
+    }
+  }, [name, surname]);
 
   function handleNavigateBack() {
     goBack();
@@ -52,8 +61,15 @@ function WhoAreYou() {
         onChangeText={text => setSurname(text)}
       />
 
-      <RectButton style={styles.okButton} onPress={handleNavigateNext}>
-        <Text style={styles.okButtonText}>Próxima</Text>
+      <RectButton
+        style={[styles.okButton, { backgroundColor: isButtonActive ? '#8257E5' : '#DCDCE5' }]}
+        onPress={handleNavigateNext}
+      >
+        <Text
+          style={[styles.okButtonText, { color: isButtonActive ? '#FFF' : '#9C98A6' }]}
+        >
+          Próxima
+        </Text>
       </RectButton>
     </View>
   );

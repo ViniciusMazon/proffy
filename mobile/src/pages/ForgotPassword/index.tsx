@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ImageBackground, Image, TextInput } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -12,13 +12,26 @@ import api from '../../services/api';
 
 function ForgotPassword() {
   const { navigate, goBack } = useNavigation();
+  const [isButtonActive, setIsButtonActive] = useState(false);
   const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    if (email) {
+      setIsButtonActive(true);
+    } else {
+      setIsButtonActive(false);
+    }
+  }, [email]);
+
 
   function handlerNavigateBack() {
     goBack();
   }
 
   async function handleNavigateToForgotPasswordSuccess() {
+    if (!email) {
+      return
+    };
     try {
       console.log(email)
       const response = await api.post('/forgot-password', { email });
@@ -53,6 +66,7 @@ function ForgotPassword() {
         <Text style={styles.title}>Esqueceu sua senha?</Text>
         <Text style={styles.subtitle}>Não esquenta, {'\n'}vamos dar um jeito nisso.</Text>
         <TextInput
+          keyboardType="email-address"
           style={styles.input}
           placeholder="E-mail"
           placeholderTextColor="#C1BCCC"
@@ -60,8 +74,15 @@ function ForgotPassword() {
           onChangeText={text => setEmail(text)}
         />
 
-        <RectButton style={styles.okButton} onPress={handleNavigateToForgotPasswordSuccess}>
-          <Text style={styles.okButtonText}>Enviar</Text>
+        <RectButton
+          style={[styles.okButton, { backgroundColor: isButtonActive ? '#04D361' : '#DCDCE5' }]}
+          onPress={handleNavigateToForgotPasswordSuccess}
+        >
+          <Text
+            style={[styles.okButtonText, { color: isButtonActive ? '#FFF' : '#9C98A6' }]}
+          >
+            Enviar
+          </Text>
         </RectButton>
       </View>
     </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
@@ -11,8 +11,17 @@ function EmailAndPassword() {
   const route = useRoute();
   const routeParams: any = route.params;
   const { navigate, goBack } = useNavigation();
+  const [isButtonActive, setIsButtonActive] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    if (email && password) {
+      setIsButtonActive(true);
+    } else {
+      setIsButtonActive(false);
+    }
+  }, [email, password]);
 
   function handleNavigateBack() {
     goBack();
@@ -51,7 +60,6 @@ function EmailAndPassword() {
         <Text style={styles.description}>Basta preencher esses dados e você estará conosco.</Text>
       </View>
 
-
       <Text style={styles.subTitle}>02.  Email e Senha</Text>
       <TextInput
         style={[styles.input, { borderTopRightRadius: 8, borderTopLeftRadius: 8 }]}
@@ -68,8 +76,15 @@ function EmailAndPassword() {
         onChangeText={text => setPassword(text)}
       />
 
-      <RectButton style={styles.okButton} onPress={handleNavigateNext}>
-        <Text style={styles.okButtonText}>Concluir cadastro</Text>
+      <RectButton
+        style={[styles.okButton, { backgroundColor: isButtonActive ? '#04D361' : '#DCDCE5' }]}
+        onPress={handleNavigateNext}
+      >
+        <Text
+          style={[styles.okButtonText, { color: isButtonActive ? '#FFF' : '#9C98A6' }]}
+        >
+          Concluir cadastro
+           </Text>
       </RectButton>
     </View>
   );

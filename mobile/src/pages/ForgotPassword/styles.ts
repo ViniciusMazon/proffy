@@ -59,14 +59,12 @@ const styles = StyleSheet.create({
   },
   okButton: {
     marginVertical: 24,
-    backgroundColor: '#04D361',
     height: 58,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 8,
   },
   okButtonText: {
-    color: '#FFF',
     fontSize: 16,
     fontFamily: 'Archivo_700Bold',
   }
