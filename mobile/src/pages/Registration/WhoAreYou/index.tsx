@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Image } from 'react-native';
+import { View, Text, TextInput, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -29,7 +29,7 @@ function WhoAreYou() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="position">
       <View style={styles.header}>
         <RectButton onPress={handleNavigateBack} style={styles.linkButton}>
           <Image source={backIcon} />
@@ -71,7 +71,7 @@ function WhoAreYou() {
           Próxima
         </Text>
       </RectButton>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

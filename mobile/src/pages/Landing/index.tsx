@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 
@@ -16,10 +16,15 @@ function Landing() {
   const [totalConnections, setTotalConnections] = useState(0);
 
   useEffect(() => {
-    api.get('/connections').then(response => {
-      const { total } = response.data;
-      setTotalConnections(total);
-    });
+    async function init() {
+      const token = await AsyncStorage.getItem('proffy_token');
+      const response = await api.get('/connections', { headers: { authorization: token } });
+      if (response.status === 200) {
+        setTotalConnections(response.data.total);
+      }
+    }
+
+    init();
   }, []);
 
   function handleNavigateToGiveClassesPage() {

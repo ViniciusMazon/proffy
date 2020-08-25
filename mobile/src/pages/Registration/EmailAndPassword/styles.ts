@@ -44,12 +44,20 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 54,
+    width: '100%',
     backgroundColor: '#FFF',
     justifyContent: 'center',
     paddingHorizontal: 16,
     borderStyle: 'solid',
     borderWidth: 1,
     borderColor: '#E6E6F0',
+  },
+  passwordInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordIcon: {
+    marginLeft: -40,
   },
   okButton: {
     marginVertical: 24,

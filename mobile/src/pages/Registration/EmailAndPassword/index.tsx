@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Image } from 'react-native';
+import { View, Text, TextInput, Image, KeyboardAvoidingView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons'
 
 import backIcon from '../../../assets/images/icons/back.png'
 import styles from './styles';
@@ -12,6 +13,7 @@ function EmailAndPassword() {
   const routeParams: any = route.params;
   const { navigate, goBack } = useNavigation();
   const [isButtonActive, setIsButtonActive] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,6 +28,11 @@ function EmailAndPassword() {
   function handleNavigateBack() {
     goBack();
   }
+
+  function handleChangePasswordVisibility() {
+    setIsPasswordVisible(!isPasswordVisible);
+  }
+
 
   async function handleNavigateNext() {
     const data = {
@@ -44,7 +51,7 @@ function EmailAndPassword() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="position">
       <View style={styles.header}>
         <RectButton onPress={handleNavigateBack} style={styles.linkButton}>
           <Image source={backIcon} />
@@ -68,13 +75,24 @@ function EmailAndPassword() {
         value={email}
         onChangeText={text => setEmail(text)}
       />
-      <TextInput
-        style={[styles.input, { borderBottomRightRadius: 8, borderBottomLeftRadius: 8 }]}
-        placeholder="Senha"
-        placeholderTextColor="#C1BCCC"
-        value={password}
-        onChangeText={text => setPassword(text)}
-      />
+
+      <View style={styles.passwordInputContainer}>
+        <TextInput
+          secureTextEntry={!isPasswordVisible}
+          style={styles.input}
+          placeholder="Senha"
+          placeholderTextColor="#C1BCCC"
+          value={password}
+          onChangeText={text => setPassword(text)}
+        />
+        <RectButton style={styles.passwordIcon} onPress={handleChangePasswordVisibility}>
+          <Ionicons
+            name={isPasswordVisible ? 'ios-eye-off' : 'ios-eye'}
+            size={25}
+            color={'#9C98A6'}
+          />
+        </RectButton>
+      </View>
 
       <RectButton
         style={[styles.okButton, { backgroundColor: isButtonActive ? '#04D361' : '#DCDCE5' }]}
@@ -86,7 +104,7 @@ function EmailAndPassword() {
           Concluir cadastro
            </Text>
       </RectButton>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ImageBackground, Text, TextInput, View } from 'react-native';
+import { Image, ImageBackground, Text, TextInput, View, KeyboardAvoidingView } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Ionicons } from '@expo/vector-icons'
 
 import logoImg from '../../assets/images/logo.png';
 import background from '../../assets/images/background.png';
@@ -13,6 +14,7 @@ import api from '../../services/api';
 function Login() {
   const { navigate } = useNavigation();
   const [isButtonActive, setIsButtonActive] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,7 +23,6 @@ function Login() {
     async function init() {
       const tokenExists = await AsyncStorage.getItem('proffy_remember');
       if (tokenExists) {
-        console.log('item existe');
         await AsyncStorage.setItem('proffy_token', tokenExists);
         navigate('Landing');
       }
@@ -46,6 +47,10 @@ function Login() {
     navigate('ForgotPassword');
   }
 
+  function handleChangePasswordVisibility() {
+    setIsPasswordVisible(!isPasswordVisible);
+  }
+
   async function handleLogin() {
     if (!email || !password) {
       return;
@@ -67,7 +72,7 @@ function Login() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="position">
       <ImageBackground
         resizeMode="contain"
         source={background}
@@ -98,14 +103,24 @@ function Login() {
           value={email}
           onChangeText={text => setEmail(text)}
         />
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          placeholder="Senha"
-          placeholderTextColor="#C1BCCC"
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
+
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            secureTextEntry={!isPasswordVisible}
+            style={styles.input}
+            placeholder="Senha"
+            placeholderTextColor="#C1BCCC"
+            value={password}
+            onChangeText={text => setPassword(text)}
+          />
+          <RectButton style={styles.passwordIcon} onPress={handleChangePasswordVisibility}>
+            <Ionicons
+              name={isPasswordVisible ? 'ios-eye-off' : 'ios-eye'}
+              size={25}
+              color={'#9C98A6'}
+            />
+          </RectButton>
+        </View>
 
         <View style={styles.textGroup}>
           <View style={styles.textGroup}>
@@ -132,7 +147,7 @@ function Login() {
             </Text>
         </RectButton>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 

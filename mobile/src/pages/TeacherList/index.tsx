@@ -37,12 +37,14 @@ function TeacherList() {
   }
 
   async function handleFiltersSubmit() {
+    const token = await AsyncStorage.getItem('proffy_token');
     const response = await api.get('/classes', {
       params: {
         week_day,
         subject,
         time
-      }
+      },
+      headers: { authorization: token }
     });
     setTeachers(response.data);
     setIsFiltersVisible(false);

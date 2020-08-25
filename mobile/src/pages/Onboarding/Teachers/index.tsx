@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, ImageBackground, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, ImageBackground, Image, AsyncStorage } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,6 +10,19 @@ import styles from './styles';
 
 function Teachers() {
   const { navigate } = useNavigation();
+
+  useEffect(() => {
+    async function init() {
+      const isFirstBoot = await AsyncStorage.getItem('proffy_isFirstBoot');
+      if (isFirstBoot) {
+        navigate('Login');
+      } else {
+        await AsyncStorage.setItem('proffy_isFirstBoot', 'false');
+      }
+    }
+
+    init();
+  }, []);
 
   function handleNavigateNext() {
     navigate('Classes');

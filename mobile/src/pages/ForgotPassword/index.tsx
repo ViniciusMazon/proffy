@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ImageBackground, Image, TextInput } from 'react-native';
+import { View, Text, ImageBackground, Image, TextInput, KeyboardAvoidingView } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
@@ -46,7 +46,7 @@ function ForgotPassword() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="position">
       <ImageBackground
         resizeMode="contain"
         source={background}
@@ -85,7 +85,7 @@ function ForgotPassword() {
           </Text>
         </RectButton>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
