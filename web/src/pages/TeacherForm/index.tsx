@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
@@ -41,6 +42,15 @@ function TeacherForm() {
 
   function handleCreateClass(e: FormEvent) {
     e.preventDefault();
+    const token = sessionStorage.getItem('proffy_token');
+    if (!token) {
+      toast.error('Sua sessão expirou, você será redirecionado');
+      setTimeout(() => {
+        history.push('/');
+      }, 3000);
+      return
+    }
+
     api.post('/classes', {
       name,
       avatar,
@@ -49,11 +59,16 @@ function TeacherForm() {
       subject,
       cost: Number(cost),
       schedule: scheduleItems
+    }, {
+      headers: { authorization: token }
     }).then(() => {
-      alert('Cadastro realizado com sucesso!');
-      history.push('/');
-    }).catch(() => {
-      alert('Erro no cadastro!');
+      toast.error('Cadastro realizado com sucesso, você será redirecionado');
+      setTimeout(() => {
+        history.push('/');
+      }, 3000);
+    }).catch((err) => {
+      toast.error('Ops... algum erro ocorreu durante o cadastro, tente novamente');
+      console.log(err);
     });
   }
 

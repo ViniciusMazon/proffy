@@ -17,12 +17,15 @@ function TeacherList() {
 
   async function searchTeachers(e: FormEvent) {
     e.preventDefault();
-
+    const token = sessionStorage.getItem('proffy_token');
     const { data } = await api.get('/classes', {
       params: {
         subject,
         week_day,
         time,
+      },
+      headers: {
+        authorization: token,
       }
     });
 

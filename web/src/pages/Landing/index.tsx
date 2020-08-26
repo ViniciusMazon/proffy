@@ -14,7 +14,15 @@ function Landing() {
   const [totalConnections, setTotalConnections] = useState(0);
 
   useEffect(() => {
-    api.get('/connections').then(({ data }) => setTotalConnections(data.total))
+    async function init() {
+      const token = sessionStorage.getItem('proffy_token');
+      const response = await api.get('/connections', { headers: { authorization: token } });
+      if (response.status === 200) {
+        setTotalConnections(response.data.total);
+      }
+    }
+
+    init();
   }, []);
 
   return (
