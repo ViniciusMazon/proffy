@@ -2,14 +2,69 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: var(--color-text-in-primary);
   background: var(--color-primary);
 }
 
+#page-landing-content {
+  width: 100%;
+  height: 100%;
+  background: var(--color-primary);
+}
+
 .logo-container img {
   height: 10rem;
+}
+
+.page-landing-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2.4rem 2rem 6rem 2rem;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.profile img {
+  width: 4.0rem;
+  height: 4.0rem;
+  border-radius: 100%;
+  margin-right: 1.6rem;
+}
+
+.profile p {
+  font: 1.4rem Poppins;
+  line-height: 3.0rem;
+  color: var(--color-text-in-primary);
+}
+
+.logoff-button {
+  width: 4.0rem;
+  height: 4.0rem;
+  border-radius: 0.8rem;
+  background-color: var(--color-primary-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.logoff-button:hover {
+  background-color: var(--color-primary-light);
+}
+
+.logoff-button img {
+  width: 2.0rem;
+  height: 2.0rem;
 }
 
 .hero-image {
@@ -28,6 +83,30 @@
   margin-top: 0.8rem;
 }
 
+.page-landing-footer {
+  background-color: var(--color-background);
+}
+
+#page-lading-footer-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-landing-footer h1 {
+  font: 2.0rem Poppins;
+  line-height: 3.0rem;
+  color: var(--color-text-base);
+  margin-top: 3rem;
+}
+
+.page-landing-footer h1 strong {
+  font: 600 2.0rem Poppins;
+}
+
 .buttons-container {
   display: flex;
   justify-content: center;
@@ -35,7 +114,7 @@
 }
 
 .buttons-container a {
-  width: 30rem;
+  width: 17rem;
   height: 10.4rem;
   border-radius: 0.8rem;
   font: 700 2.0rem Archivo;
@@ -80,53 +159,67 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .total-connections img {
   margin-left: 0.8rem;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1120px) {
   #page-landing-content {
-    max-width: 1100px;
+    max-width: 1120px;
     display: grid;
-    grid-template-rows: 350px 1fr;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-areas: "logo hero hero" "buttons buttons total";
+    /* grid-template-rows: 1fr 350px 1fr;
+    grid-template-columns: 2fr 1fr 1fr; */
+    grid-template-rows: .5fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: "header header header" "logo hero hero" "footer footer footer";
   }
-
+  .page-landing-header {
+    grid-area: header;
+  }
   .logo-container {
     grid-area: logo;
     align-self: center;
     text-align: left;
     margin: 0;
   }
-
   .logo-container h2 {
     text-align: initial;
     font-size: 3.6rem;
   }
-
   .logo-container img {
     height: 100%;
   }
-
   .hero-image {
     grid-area: hero;
     justify-self: end;
   }
-
-  .buttons-container {
-    grid-area: buttons;
-    justify-content: flex-start;
+  .page-landing-footer {
+    max-width: 1120px;
+    flex-wrap: nowrap;
+    grid-area: footer;
   }
-
-  .buttons-container a {
-    font-size: 2.4rem;
+  #page-lading-footer-content {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr .7fr 2.5fr;
+    grid-template-areas: "welcome total buttons";
   }
-
+  #page-lading-footer-content h1 {
+    grid-area: welcome;
+  }
   .total-connections {
     grid-area: total;
     justify-self: end;
+  }
+  .buttons-container {
+    grid-area: buttons;
+    justify-self: end;
+  }
+  .buttons-container a {
+    font-size: 2.4rem;
+    width: 30rem;
   }
 }
