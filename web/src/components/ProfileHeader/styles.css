@@ -1,0 +1,119 @@
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-primary);
+  background-image: url("../../assets/images/success-background.svg");
+  background-position: center center;
+  background-size: initial;
+  background-repeat: no-repeat;
+}
+
+.profile-header .top-bar-container {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-text-in-primary);
+  background: var(--color-primary-dark);
+  padding: 1.6rem 0;
+  border-bottom: solid 2px var(--color-primary-darker);
+}
+
+.profile-header .top-bar-container a {
+  height: 3.2rem;
+  transition: opacity 0.2s;
+}
+
+.profile-header .top-bar-container a :hover {
+  opacity: 0.6;
+}
+
+.profile-header .top-bar-container p {
+  font: 500 1.6rem Archivo;
+  line-height: 1.7rem;
+  color: var(--color-text-in-primary);
+}
+
+.profile-header .top-bar-container>img {
+  height: 1.6rem;
+}
+
+.profile-header .profile-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 6.4rem auto;
+}
+
+.profile-header .profile-header-content strong {
+  font: 700 3.6rem Archivo;
+  line-height: 2.5rem;
+  color: var(--color-title-in-primary);
+  margin-top: 3.2rem;
+}
+
+.profile-header .profile-header-content p {
+  max-width: 30rem;
+  font-size: 2.4rem;
+  line-height: 2.6rem;
+  color: var(--color-text-in-primary);
+  margin-top: 2.4rem;
+}
+
+.profile-header .profile-header-content span {
+  display: flex;
+  align-items: flex-end;
+}
+
+.profile-header .profile-header-content img {
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
+}
+
+.profile-header .profile-header-content button {
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 50%;
+  background: var(--color-secundary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -5.5rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.profile-header .profile-header-content button:hover {
+  background: var(--color-secundary-dark);
+}
+
+.profile-header .profile-header-content button img {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+@media (min-width: 700px) {
+  .profile-header {
+    height: 535px;
+  }
+  .profile-header .top-bar-container {
+    max-width: 1100px;
+  }
+  /* .profile-header .profile-header-content {
+    flex: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    padding-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  } */
+  .profile-header .profile-header-content strong {
+    max-width: 350px;
+  }
+}
