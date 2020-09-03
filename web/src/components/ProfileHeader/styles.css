@@ -9,15 +9,15 @@
 }
 
 .profile-header .top-bar-container {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   color: var(--color-text-in-primary);
   background: var(--color-primary-dark);
   padding: 1.6rem 0;
-  border-bottom: solid 2px var(--color-primary-darker);
+  border-bottom: solid 1px var(--color-primary-darker);
 }
 
 .profile-header .top-bar-container a {
@@ -101,18 +101,8 @@
     height: 535px;
   }
   .profile-header .top-bar-container {
-    max-width: 1100px;
+    width: 100%;
   }
-  /* .profile-header .profile-header-content {
-    flex: 1;
-    max-width: 740px;
-    margin: 0 auto;
-    padding-bottom: 48px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  } */
   .profile-header .profile-header-content strong {
     max-width: 350px;
   }
