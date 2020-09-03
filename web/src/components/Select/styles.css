@@ -1,5 +1,7 @@
 .select-block {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .select-block+.select-block {
@@ -20,6 +22,7 @@
   outline: 0;
   padding: 0 1.6rem;
   font: 1.6rem Archivo;
+  color: var( --color-text-complement);
 }
 
 .select-block:focus-within::after {

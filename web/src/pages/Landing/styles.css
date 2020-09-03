@@ -169,13 +169,14 @@
 
 @media (min-width: 1120px) {
   #page-landing-content {
-    max-width: 1120px;
+    width: 100vw;
     display: grid;
-    /* grid-template-rows: 1fr 350px 1fr;
-    grid-template-columns: 2fr 1fr 1fr; */
-    grid-template-rows: .5fr 2fr 1fr;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: .5fr 500px auto;
+    grid-template-columns: 2fr 1fr 1fr;
     grid-template-areas: "header header header" "logo hero hero" "footer footer footer";
+  }
+  .page-landing-header, .logo-container, .page-landing-footer {
+    padding: 2.4rem 20rem 0 20rem;
   }
   .page-landing-header {
     grid-area: header;
@@ -194,18 +195,18 @@
     height: 100%;
   }
   .hero-image {
+    max-height: 45rem;
     grid-area: hero;
     justify-self: end;
+    margin-right: 11rem;
   }
   .page-landing-footer {
-    max-width: 1120px;
-    flex-wrap: nowrap;
     grid-area: footer;
   }
   #page-lading-footer-content {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 1fr .7fr 2.5fr;
+    grid-template-columns: 1fr 1fr 2fr;
     grid-template-areas: "welcome total buttons";
   }
   #page-lading-footer-content h1 {

@@ -5,6 +5,7 @@ import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
+import smileIcon from '../../assets/images/icons/smile.svg';
 import './styles.css';
 
 function TeacherList() {
@@ -13,7 +14,6 @@ function TeacherList() {
   const [subject, setSubject] = useState('');
   const [week_day, setWeekDay] = useState('');
   const [time, setTime] = useState('');
-
 
   async function searchTeachers(e: FormEvent) {
     e.preventDefault();
@@ -34,7 +34,13 @@ function TeacherList() {
 
   return (
     <div id="page-teacher-list" className="container">
-      <PageHeader title="Estes são os proffys disponíveis ">
+      <PageHeader
+        name="Estudar"
+        title="Estes são os proffys disponíveis "
+        description="O primeiro passo, é preencher esse formulário de inscrição."
+        icon={smileIcon}
+        iconDescription="Nós temos 32 professores."
+      >
         <form id="search-teachers" onSubmit={searchTeachers}>
           <Select
             name="subject"

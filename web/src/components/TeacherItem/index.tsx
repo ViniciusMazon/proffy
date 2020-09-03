@@ -3,7 +3,11 @@ import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
 import api from '../../services/api';
 import './styles.css';
 
-
+interface TeacherSchedule {
+  day: string;
+  from: string;
+  to: string;
+}
 export interface Teacher {
   id: number;
   subject: string;
@@ -12,6 +16,7 @@ export interface Teacher {
   avatar: string;
   whatsapp: string;
   bio: string;
+  schedule: Array<TeacherSchedule>;
 }
 interface TeacherItemProps {
   teacher: Teacher;
@@ -37,6 +42,16 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
       <p>
         {teacher.bio}
       </p>
+      <div className="teacher-schedule">
+        {teacher.schedule.map(schedule => (
+          <span>
+            <p>Dia</p>
+            <strong>{schedule.day}</strong>
+            <p>Horário</p>
+            <strong>{schedule.from}h - {schedule.to}h</strong>
+          </span>
+        ))}
+      </div>
       <footer>
         <p>
           Preço/hora
@@ -47,7 +62,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
         Entrar em contato
       </a>
       </footer>
-    </article>
+    </article >
   );
 }
 
