@@ -24,6 +24,12 @@
   opacity: 0.6;
 }
 
+.page-header .top-bar-container p {
+  font: 500 1.6rem Archivo;
+  line-height: 1.7rem;
+  color: var(--color-text-in-primary);
+}
+
 .page-header .top-bar-container>img {
   height: 1.6rem;
 }
@@ -41,12 +47,34 @@
   color: var(--color-title-in-primary);
 }
 
+.page-header .header-content div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .page-header .header-content p {
   max-width: 30rem;
   font-size: 1.6rem;
   line-height: 2.6rem;
   color: var(--color-text-in-primary);
   margin-top: 2.4rem;
+}
+
+.page-header .header-content span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-header .header-content span img {
+  margin-right: 2.4rem;
+}
+
+.page-header .header-content span p {
+  font: normal 1.2rem Poppins;
+  width: 10.5rem;
+  margin: 0;
 }
 
 @media (min-width: 700px) {
