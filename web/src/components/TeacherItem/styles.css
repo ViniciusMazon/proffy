@@ -40,6 +40,44 @@
   line-height: 2.8rem;
 }
 
+.teacher-item>div {
+  margin: 3.2rem;
+}
+
+.teacher-item .teacher-schedule {
+  display: flex;
+}
+
+.teacher-item .teacher-schedule span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 12.2rem;
+  height: 13.6rem;
+  background: #FAFAFC;
+  border: 1px solid #E6E6F0;
+  border-radius: .8rem;
+  /* padding: 1.6rem 0 1.2rem 1.6rem; */
+  padding: 1.6rem;
+}
+
+.teacher-item .teacher-schedule span+span {
+  margin-left: 1.6rem;
+}
+
+.teacher-item .teacher-schedule span p {
+  font: normal 1.2rem Poppins;
+  color: #9C98A6;
+  line-height: 2.0rem;
+}
+
+.teacher-item .teacher-schedule span strong {
+  font: 700 1.6rem Archivo;
+  line-height: 2.6rem;
+  color: #6A6180;
+  margin-bottom: 1.2rem;
+}
+
 .teacher-item footer {
   padding: 3.2rem 2rem;
   background: var(--color-box-footer);
