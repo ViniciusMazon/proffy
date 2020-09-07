@@ -10,7 +10,7 @@ import styles from './styles';
 import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 
 function Profile() {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -39,6 +39,10 @@ function Profile() {
 
   function handleNavigateBack() {
     goBack();
+  }
+
+  function handleSaveChanges() {
+    navigate('Landing');
   }
 
   return (
@@ -185,6 +189,12 @@ function Profile() {
             </RectButton>
           </View>
         </View>
+
+      </View>
+      <View style={styles.footer}>
+        <RectButton style={styles.footerButton} onPress={handleSaveChanges}>
+          <Text style={styles.footerButtonText}>Salvar alterações</Text>
+        </RectButton>
       </View>
     </ScrollView >
   );

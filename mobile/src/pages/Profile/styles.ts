@@ -13,14 +13,12 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: '#E6E6F0',
-    borderRadius: 8,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
     marginHorizontal: 16,
     marginTop: -30,
     paddingHorizontal: 40,
     paddingBottom: 40,
-    marginBottom: 30,
   },
   avatar: {
     width: 140,
@@ -127,9 +125,32 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 20,
     color: '#E33D3D',
-  }
+  },
+  footer: {
+    height: 100,
+    backgroundColor: '#FAFAFC',
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    paddingHorizontal: 40,
+    marginHorizontal: 16,
+    marginBottom: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerButton: {
+    width: 293,
+    height: 56,
+    borderRadius: 8,
+    backgroundColor: '#04D361',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  footerButtonText: {
+    fontFamily: 'Archivo_600SemiBold',
+    fontSize:16,
+    lineHeight: 26,
+    color: '#FFF',
+  },
 });
-
-
 
 export default styles;
