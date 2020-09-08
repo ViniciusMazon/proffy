@@ -12,9 +12,10 @@ interface SuccessPageProps {
   title: string;
   message: string;
   redirectTo: string;
+  buttonText: string;
 }
 
-const SuccessPage: React.FC<SuccessPageProps> = ({ title, message, redirectTo }) => {
+const SuccessPage: React.FC<SuccessPageProps> = ({ title, message, redirectTo, buttonText }) => {
   const { navigate } = useNavigation();
 
   function handleNavigateToLogin() {
@@ -31,7 +32,7 @@ const SuccessPage: React.FC<SuccessPageProps> = ({ title, message, redirectTo })
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{message}</Text>
       <RectButton style={styles.okButton} onPress={handleNavigateToLogin}>
-        <Text style={styles.okButtonText}>Concluir cadastro</Text>
+        <Text style={styles.okButtonText}>{buttonText}</Text>
       </RectButton>
     </ImageBackground>
   );

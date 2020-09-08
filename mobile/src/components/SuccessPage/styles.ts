@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 24,
-    width: 165,
+    width: 200,
     fontFamily: 'Archivo_700Bold',
     textAlign: 'center',
     fontSize: 32,
