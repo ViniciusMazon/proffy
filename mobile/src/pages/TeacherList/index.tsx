@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
 
+import smileIcon from '../../assets/images/icons/smile.png';
 import styles from './styles';
 import api from '../../services/api';
 
@@ -53,10 +54,15 @@ function TeacherList() {
   return (
     <View style={styles.container}>
       <PageHeader
+        name="Estudar"
         title="Proffys disponíveis"
+        icon={smileIcon}
+        iconText="32 proffys"
         headerRight={(
-          <BorderlessButton onPress={handleToggleFiltersVisible}>
-            <Feather name="filter" size={20} color="#FFF" />
+          <BorderlessButton onPress={handleToggleFiltersVisible} style={styles.headerRightContainer}>
+            <Feather name="filter" size={20} color="#04D361" />
+            <Text style={styles.headerRightText}>Filtrar por dia, hora e matéria</Text>
+            <Feather name={isFiltersVisible ? "chevron-up" : "chevron-down"} size={20} color="#A380F6" />
           </BorderlessButton>
         )}
       >
@@ -99,9 +105,9 @@ function TeacherList() {
               />
             </View>
           </View>
-          <RectButton onPress={handleFiltersSubmit} style={styles.submitButton}>
+          {/* <RectButton onPress={handleFiltersSubmit} style={styles.submitButton}>
             <Text style={styles.submitButtonText}>Filtrar</Text>
-          </RectButton>
+          </RectButton> */}
         </View>
         )}
       </PageHeader>

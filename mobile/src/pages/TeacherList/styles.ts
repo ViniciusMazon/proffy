@@ -8,6 +8,17 @@ const styles = StyleSheet.create({
   teacherList: {
     marginTop: -40,
   },
+  headerRightContainer: {
+    flexDirection: 'row',
+    paddingBottom: 17,
+    marginBottom: 10,
+  },
+  headerRightText: {
+    color: '#FFF',
+    marginLeft: 20,
+    marginRight: 50,
+  },
+
   searchForm: {
     marginBottom: 24,
   },
