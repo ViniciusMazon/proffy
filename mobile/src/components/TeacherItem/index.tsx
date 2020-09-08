@@ -3,21 +3,30 @@ import { Image, Text, View, Linking } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 
+
 import heartOutlineIcon from '../../assets/images/icons/heart-outline.png';
 import unfavoriteIcon from '../../assets/images/icons/unfavorite.png';
 import whatsappIcon from '../../assets/images/icons/whatsapp.png';
+import longRightArrowIcon from '../../assets/images/icons/next.png';
 
 import styles from './styles';
 import api from '../../services/api';
 
+interface Schedule {
+  weekDay: string;
+  from: string;
+  to: string;
+}
 export interface Teacher {
   id: number;
   subject: string;
   cost: number;
   name: string;
+  surname: string;
   avatar: string;
   whatsapp: string;
   bio: string;
+  schedule: Array<Schedule>;
 }
 
 interface TeacherItemProps {
@@ -71,10 +80,24 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, favorited }) => {
         {teacher.bio}
       </Text>
 
+      <View style={styles.schedule}>
+        <View style={styles.scheduleLegend}>
+          <Text style={styles.scheduleLegendText}>Dia</Text>
+          <Text style={styles.scheduleLegendText}>Horário</Text>
+        </View>
+        {teacher.schedule.map(item => (
+          <View style={styles.scheduleItem}>
+            <Text style={styles.scheduleText}>{item.weekDay}</Text>
+            <Image source={longRightArrowIcon} />
+            <Text style={styles.scheduleText}>{item.from}h - {item.to}h</Text>
+          </View>
+        ))}
+      </View>
+
       <View style={styles.footer}>
         <Text style={styles.price}>
-          Preço/hora {'   '}
-          <Text style={styles.priceValue}>R$ {teacher.cost}</Text>
+          Preço da minha hora: {'   '}
+          <Text style={styles.priceValue}>R$ {teacher.cost} reais</Text>
         </Text>
 
         <View style={styles.buttonsContainer}>
