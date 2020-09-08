@@ -55,6 +55,7 @@ function GiveClasses() {
         na nossa lista de professores. Agora é
         só ficar de olho no seu WhatsApp."
         redirectTo="Landing"
+        buttonText="Concluir cadastro"
       />
     );
   } else {
