@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-community/async-storage'
+import RNPickerSelect from 'react-native-picker-select';
+import api from '../../services/api';
 
 import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
 
 import smileIcon from '../../assets/images/icons/smile.png';
 import styles from './styles';
-import api from '../../services/api';
+import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 
 function TeacherList() {
+  const subjectList = [
+    { label: "Inglês", value: "Inglês" },
+    { label: "Matemática", value: "Matemática" },
+    { label: "História", value: "História" },
+  ];
+
+  const weekdayList = [
+    { label: "Segunda", value: 0 },
+    { label: "Terça", value: 1 },
+    { label: "Quarta", value: 2 },
+  ];
+
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [teachers, setTeachers] = useState([]);
@@ -70,12 +84,11 @@ function TeacherList() {
           <Text style={styles.label}>
             Matéria
             </Text>
-          <TextInput
-            style={styles.input}
-            value={subject}
-            onChangeText={text => setSubject(text)}
-            placeholder="Qual a matéria?"
-            placeholderTextColor="#C1BCCC"
+          <RNPickerSelect
+            style={pickerSelectStyles}
+            onValueChange={(value) => setSubject(value)}
+            items={subjectList}
+            placeholder={{ label: "Selecione", value: null }}
           />
 
           <View style={styles.inputGroup}>
@@ -83,12 +96,12 @@ function TeacherList() {
               <Text style={styles.label}>
                 Dia da semana
                 </Text>
-              <TextInput
-                style={styles.input}
-                value={week_day}
-                onChangeText={text => setWeek_day(text)}
-                placeholder="Qual o dia?"
-                placeholderTextColor="#C1BCCC"
+
+              <RNPickerSelect
+                style={pickerSelectStyles}
+                onValueChange={(value) => setWeek_day(value)}
+                items={subjectList}
+                placeholder={{ label: "Selecione", value: null }}
               />
             </View>
 
