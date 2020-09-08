@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { Text, View, ImageBackground, Image, TextInputComponent, ScrollView } from 'react-native';
-import { RectButton, TextInput } from 'react-native-gesture-handler';
+import { Text, View, Image, ScrollView } from 'react-native';
+import { RectButton, TextInput, BorderlessButton } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
 import { useNavigation } from '@react-navigation/native';
 
 import alertIcon from '../../assets/images/icons/alert.png';
+import backIcon from '../../assets/images/icons/back.png';
+import logoImg from '../../assets/images/logo.png';
 
 import styles from './styles';
 import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
-import PageHeader from '../../components/PageHeader';
 import SuccessPage from '../../components/SuccessPage';
 
 function GiveClasses() {
-  const { goBack, navigate } = useNavigation();
+  const { goBack } = useNavigation();
   const [isCompleted, setIsCompleted] = useState(false);
   const [name, setName] = useState('Vinicius');
   const [surname, setSurname] = useState('Mazon');
@@ -61,11 +62,21 @@ function GiveClasses() {
   } else {
     return (
       <ScrollView style={styles.container}>
-        <PageHeader
-          name="Dar aulas"
-          title="Que incrível que você quer dar aulas."
-          subTitle="O primeiro passo, é preencher esse formulário de inscrição."
-        />
+
+        <View style={styles.topBar}>
+          <BorderlessButton onPress={handleNavigateBack}>
+            <Image source={backIcon} resizeMode="contain" />
+          </BorderlessButton>
+          <Text style={styles.topBarName}>Dar aulas</Text>
+          <Image source={logoImg} resizeMode="contain" />
+        </View>
+        <View style={styles.header}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleHeader}>Que incrível que você quer dar aulas.</Text>
+          </View>
+          <Text style={styles.subTitle}>O primeiro passo, é preencher esse formulário de inscrição.</Text>
+
+        </View>
 
         <View style={styles.card}>
           <View style={styles.fieldset}>

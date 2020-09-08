@@ -5,6 +5,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F0F0F7',
   },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#8257E5',
+    paddingTop: 40,
+    paddingHorizontal: 40,
+  },
+  topBarName: {
+    fontFamily: 'Archivo_400Regular',
+    fontSize: 14,
+    lineHeight: 15,
+    color: '#D4C2FF',
+  },
   header: {
     height: 340,
     justifyContent: 'center',
@@ -24,7 +38,7 @@ const styles = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 70,
-    marginTop: 40,
+    marginTop: 5,
   },
   name: {
     fontFamily: 'Archivo_700Bold',
@@ -147,7 +161,7 @@ const styles = StyleSheet.create({
   },
   footerButtonText: {
     fontFamily: 'Archivo_600SemiBold',
-    fontSize:16,
+    fontSize: 16,
     lineHeight: 26,
     color: '#FFF',
   },

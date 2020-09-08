@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Text, View, ImageBackground, Image, TextInputComponent, ScrollView } from 'react-native';
-import { RectButton, TextInput } from 'react-native-gesture-handler';
+import { Text, View, ImageBackground, Image, ScrollView } from 'react-native';
+import { RectButton, TextInput, BorderlessButton } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
 import { useNavigation } from '@react-navigation/native';
 
 import giveClassesBgImage from '../../assets/images/give-classes-background.png';
+import backIcon from '../../assets/images/icons/back.png';
+import logoImg from '../../assets/images/logo.png';
 
 import styles from './styles';
 import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
@@ -47,6 +49,14 @@ function Profile() {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.topBar}>
+        <BorderlessButton onPress={handleNavigateBack}>
+          <Image source={backIcon} resizeMode="contain" />
+        </BorderlessButton>
+        <Text style={styles.topBarName}>Meu perfil</Text>
+        <Image source={logoImg} resizeMode="contain" />
+      </View>
+
       <ImageBackground
         resizeMode="contain"
         source={giveClassesBgImage}
