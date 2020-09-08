@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
   header: {
 
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   title: {
     fontFamily: 'Archivo_700Bold',
     color: '#FFF',
@@ -26,13 +30,25 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     marginTop: 41,
     marginBottom: 16,
+    maxWidth: 160,
   },
   subTitle: {
     fontFamily: 'Poppins_400Regular',
     fontSize: 14,
     lineHeight: 24,
     color: '#D4C2FF',
-    marginBottom: 32,
+  },
+  icon: {
+    marginTop: 27,
+    marginLeft: 40,
+    marginRight: 8,
+  },
+  iconText: {
+    marginTop: 27,
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 12,
+    lineHeight: 18,
+    color: '#D4C2FF',
   },
 });
 

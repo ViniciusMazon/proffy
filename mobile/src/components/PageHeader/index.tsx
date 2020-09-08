@@ -12,10 +12,12 @@ interface PageHeaderProps {
   name?: string;
   title: string;
   subTitle?: string;
+  icon?: string;
+  iconText?: string;
   headerRight?: ReactNode;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ name, title, subTitle, headerRight, children }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ name, title, subTitle, icon, iconText, headerRight, children }) => {
   const { navigate } = useNavigation();
 
   function handleGoBack() {
@@ -33,8 +35,13 @@ const PageHeader: React.FC<PageHeaderProps> = ({ name, title, subTitle, headerRi
       </View>
 
       <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{title}</Text>
+          <Image source={icon} style={styles.icon} />
+          <Text style={styles.iconText}>{iconText}</Text>
+        </View>
         <Text style={styles.subTitle}>{subTitle}</Text>
+
         {headerRight}
       </View>
 
