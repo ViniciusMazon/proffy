@@ -13,14 +13,13 @@ import api from '../../services/api';
 function Profile() {
   const history = useHistory();
   const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
   const [avatar, setAvatar] = useState('');
   const [email, setEmail] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [bio, setBio] = useState('');
-
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
-
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: '', to: '' }
   ]);
@@ -41,7 +40,7 @@ function Profile() {
     setScheduleItems(updatedScheduleItems);
   }
 
-  function handleCreateClass(e: FormEvent) {
+  function handleSaveChanges(e: FormEvent) {
     e.preventDefault();
     const token = sessionStorage.getItem('proffy_token');
     if (!token) {
@@ -54,6 +53,7 @@ function Profile() {
 
     api.post('/classes', {
       name,
+      surname,
       avatar,
       whatsapp,
       bio,
@@ -82,12 +82,12 @@ function Profile() {
       />
 
       <main>
-        <form onSubmit={handleCreateClass}>
+        <form onSubmit={handleSaveChanges}>
           <fieldset>
             <legend>Seus dados</legend>
             <span className="input-group">
               <Input name="name" label="Nome" value={name} onChange={e => setName(e.target.value)} />
-              <Input name="surname" label="Sobrenome" value={name} onChange={e => setName(e.target.value)} />
+              <Input name="surname" label="Sobrenome" value={surname} onChange={e => setSurname(e.target.value)} />
             </span>
             <span className="input-group">
               <Input name="email" label="E-mail" value={email} onChange={e => setEmail(e.target.value)} />

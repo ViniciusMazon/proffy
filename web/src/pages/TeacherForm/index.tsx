@@ -13,7 +13,8 @@ import api from '../../services/api';
 
 function TeacherForm() {
   const history = useHistory();
-  const [name, setName] = useState('Vinicius Mazon');
+  const [name, setName] = useState('Vinicius');
+  const [surname, setSurname] = useState('Mazon');
   const [avatar, setAvatar] = useState('https://github.com/viniciusmazon.png');
   const [whatsapp, setWhatsapp] = useState('');
   const [bio, setBio] = useState('');
@@ -54,6 +55,7 @@ function TeacherForm() {
 
     api.post('/classes', {
       name,
+      surname,
       avatar,
       whatsapp,
       bio,
@@ -90,7 +92,7 @@ function TeacherForm() {
             <span>
               <div className="teacher-profile">
                 <img src={avatar} alt={name} />
-                <strong>{name}</strong>
+                <strong>{name} {surname}</strong>
               </div>
               <Input name="whatsapp" label="WhatsApp" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} />
             </span>

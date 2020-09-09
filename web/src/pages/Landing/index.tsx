@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
+import { useHistory } from 'react-router-dom';
 
 import logoImg from '../../assets/images/logo.svg';
 import landingImg from '../../assets/images/landing.svg';
@@ -12,6 +13,7 @@ import purpleHeartIcon from '../../assets/images/icons/purple-heart.svg';
 import './styles.css';
 
 function Landing() {
+  const history = useHistory();
   const [totalConnections, setTotalConnections] = useState(0);
 
   useEffect(() => {
@@ -26,6 +28,12 @@ function Landing() {
     init();
   }, []);
 
+  function handleLogOff() {
+    localStorage.removeItem('proffy_remember');
+    sessionStorage.removeItem('proffy_token');
+    history.push('/');
+  }
+
   return (
     <div id="page-landing">
       <div id="page-landing-content">
@@ -34,7 +42,7 @@ function Landing() {
             <img src="https://avatars3.githubusercontent.com/u/38103866?s=460&u=244951efa29035b28d90d168c50cd497cde3b9d5&v=4" alt="Profile image" />
             <p>Vinicius Mazon</p>
           </Link>
-          <div className="logoff-button">
+          <div className="logoff-button" onClick={handleLogOff}>
             <img src={logoffIcon} alt="Fazer logoff" />
           </div>
         </div>
