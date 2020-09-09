@@ -13,6 +13,7 @@ import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 
 function Profile() {
   const { goBack, navigate } = useNavigation();
+
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -20,14 +21,14 @@ function Profile() {
   const [bio, setBio] = useState('');
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
-  const [weekday, setWeekDay] = useState('');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [scheduleItems, setScheduleItems] = useState([
+    { week_day: 0, from: '', to: '' }
+  ]);
 
   const subjectsList = [
     { label: 'Português', value: 'Português' },
-    { label: 'Matemárica', value: 'Matemárica' }
-  ]
+    { label: 'Matemática', value: 'Matemática' }
+  ];
 
   const weekDaysList = [
     { label: 'Domingo', value: 0 },
@@ -37,14 +38,41 @@ function Profile() {
     { label: 'Quinta', value: 4 },
     { label: 'Sexta', value: 5 },
     { label: 'Sábado', value: 6 },
-  ]
+  ];
 
   function handleNavigateBack() {
     goBack();
   }
 
+  function addNewScheduleItem() {
+    setScheduleItems([...scheduleItems, { week_day: 0, from: '', to: '' }]);
+  }
+
+  function setScheduleItemValue(position: number, field: string, value: string) {
+    const updatedScheduleItems = scheduleItems.map((scheduleItem, index) => {
+      if (index === position) {
+        return { ...scheduleItem, [field]: value }
+      }
+
+      return scheduleItem;
+    });
+
+    setScheduleItems(updatedScheduleItems);
+  }
+
   function handleSaveChanges() {
-    navigate('Landing');
+    const data  = {
+      name,
+      surname,
+      email,
+      whatsapp,
+      bio,
+      scheduleItems,
+    }
+
+    console.log(data);
+
+    // navigate('Landing');
   }
 
   return (
@@ -155,52 +183,54 @@ function Profile() {
         <View style={styles.fieldset}>
           <View style={styles.titleAndButton}>
             <Text style={styles.title}>Horários disponíveis</Text>
-            <RectButton style={styles.addButton}>
+            <RectButton style={styles.addButton} onPress={addNewScheduleItem}>
               <Text style={styles.addButtonText}>+ Novo</Text>
             </RectButton>
           </View>
-          <Text style={styles.label}> Dia da semana</Text>
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            onValueChange={(value) => setWeekDay(value)}
-            items={weekDaysList}
-            placeholder={{ label: 'Selecione a dia da semana', value: null }}
-          />
-          <View style={styles.inputGroup}>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>
-                Das
-            </Text>
-              <TextInput
-                style={styles.input}
-                value={from}
-                onChangeText={text => setFrom(text)}
-                placeholder="Das"
-                placeholderTextColor="#C1BCCC"
-              />
-            </View>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>
-                Até
-            </Text>
-              <TextInput
-                style={styles.input}
-                value={to}
-                onChangeText={text => setTo(text)}
-                placeholder="Até"
-                placeholderTextColor="#C1BCCC"
-              />
-            </View>
-          </View>
-          <View style={styles.footerSeparator}>
-            <View style={styles.line} />
-            <RectButton style={styles.deleteLineButton}>
-              <Text style={styles.deleteLineButtonText}> Excluir horário</Text>
-            </RectButton>
-          </View>
-        </View>
 
+          {scheduleItems.map((scheduleItem, index) => (
+            <>
+              <Text style={styles.label}> Dia da semana</Text>
+              <RNPickerSelect
+                style={pickerSelectStyles}
+                onValueChange={(value) => setScheduleItemValue(index, 'week_day', value)}
+                items={weekDaysList}
+                placeholder={{ label: 'Selecione a dia da semana', value: scheduleItem.week_day }}
+              />
+              <View style={styles.inputGroup}>
+                <View style={styles.inputBlock}>
+                  <Text style={styles.label}>Das</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={scheduleItem.from}
+                    onChangeText={text => setScheduleItemValue(index, 'from', text)}
+                    placeholder="Das"
+                    placeholderTextColor="#C1BCCC"
+                  />
+                </View>
+                <View style={styles.inputBlock}>
+                  <Text style={styles.label}>Até</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={scheduleItem.to}
+                    onChangeText={text => setScheduleItemValue(index, 'to', text)}
+                    placeholder="Até"
+                    placeholderTextColor="#C1BCCC"
+                  />
+                </View>
+              </View>
+              <View style={styles.footerSeparator}>
+                <View style={styles.line} />
+                <RectButton style={styles.deleteLineButton}>
+                  <Text style={styles.deleteLineButtonText}>Excluir horário</Text>
+                </RectButton>
+              </View>
+            </>
+          ))}
+
+        </View>
       </View>
+
       <View style={styles.footer}>
         <RectButton style={styles.footerButton} onPress={handleSaveChanges}>
           <Text style={styles.footerButtonText}>Salvar alterações</Text>
