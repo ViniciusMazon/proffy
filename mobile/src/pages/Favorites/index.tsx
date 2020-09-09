@@ -11,28 +11,7 @@ import favoriteIcon from '../../assets/images/icons/favorite.png';
 import styles from './styles';
 
 function Favorites() {
-  const [favorites, setFavorites] = useState([
-    {
-      id: 1,
-      subject: 'Inglês',
-      cost: '20',
-      name: 'Vinicius',
-      surname: 'Mazon',
-      avatar: 'https://github.com/viniciusmazon.png',
-      whatsapp: '77 99999999',
-      bio: 'Apaixonado por explodir coisas em laboratório e por mudar a vida das pessoas através de experiências. Mais de 200.000 pessoas já passaram por uma das minhas explosões.',
-      schedule: [{
-        weekDay: 'Segunda',
-        from: '8',
-        to: '18',
-      },
-      {
-        weekDay: 'Quarta',
-        from: '8',
-        to: '18',
-      }]
-    }
-  ]);
+  const [favorites, setFavorites] = useState([]);
 
   function loadFavorites() {
     AsyncStorage.getItem('favorites').then(response => {

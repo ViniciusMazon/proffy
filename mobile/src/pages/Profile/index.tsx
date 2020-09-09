@@ -61,7 +61,7 @@ function Profile() {
   }
 
   function handleSaveChanges() {
-    const data  = {
+    const data = {
       name,
       surname,
       email,
@@ -69,10 +69,8 @@ function Profile() {
       bio,
       scheduleItems,
     }
-
     console.log(data);
-
-    // navigate('Landing');
+    navigate('Landing');
   }
 
   return (
@@ -131,6 +129,7 @@ function Profile() {
             onChangeText={text => setEmail(text)}
             placeholder="E-mail"
             placeholderTextColor="#C1BCCC"
+            keyboardType="email-address"
           />
 
           <Text style={styles.label}>
@@ -142,6 +141,7 @@ function Profile() {
             onChangeText={text => setWhatsapp(text)}
             placeholder="WhatsApp"
             placeholderTextColor="#C1BCCC"
+            keyboardType="phone-pad"
           />
 
           <Text style={styles.label}>
@@ -177,6 +177,7 @@ function Profile() {
             onChangeText={text => setCost(text)}
             placeholder="Custo"
             placeholderTextColor="#C1BCCC"
+            keyboardType="decimal-pad"
           />
         </View>
 

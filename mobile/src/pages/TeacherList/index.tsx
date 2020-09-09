@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
@@ -21,9 +21,40 @@ function TeacherList() {
   ];
 
   const weekdayList = [
-    { label: "Segunda", value: 0 },
-    { label: "Terça", value: 1 },
-    { label: "Quarta", value: 2 },
+    { label: "Domingo", value: 0 },
+    { label: "Segunda", value: 1 },
+    { label: "Terça", value: 2 },
+    { label: "Quarta", value: 3 },
+    { label: "Quinta", value: 4 },
+    { label: "Sexta", value: 5 },
+    { label: "Sábado", value: 6 },
+  ];
+
+  const timeList = [
+    { label: "00:00", value: '00:00' },
+    { label: "01:00", value: '01:00' },
+    { label: "02:00", value: '02:00' },
+    { label: "03:00", value: '03:00' },
+    { label: "04:00", value: '04:00' },
+    { label: "05:00", value: '05:00' },
+    { label: "06:00", value: '06:00' },
+    { label: "07:00", value: '07:00' },
+    { label: "08:00", value: '08:00' },
+    { label: "09:00", value: '09:00' },
+    { label: "10:00", value: '10:00' },
+    { label: "11:00", value: '11:00' },
+    { label: "12:00", value: '12:00' },
+    { label: "13:00", value: '13:00' },
+    { label: "14:00", value: '14:00' },
+    { label: "15:00", value: '15:00' },
+    { label: "16:00", value: '16:00' },
+    { label: "17:00", value: '17:00' },
+    { label: "18:00", value: '18:00' },
+    { label: "19:00", value: '19:00' },
+    { label: "20:00", value: '20:00' },
+    { label: "21:00", value: '21:00' },
+    { label: "22:00", value: '22:00' },
+    { label: "23:00", value: '23:00' },
   ];
 
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
@@ -33,6 +64,15 @@ function TeacherList() {
   const [subject, setSubject] = useState('');
   const [week_day, setWeek_day] = useState('');
   const [time, setTime] = useState('');
+
+  useEffect(() => {
+    if (week_day !== '' && subject !== '' && time !== '') {
+      handleFiltersSubmit();
+      setWeek_day('');
+      setSubject('');
+      setTime('');
+    }
+  }, [week_day, subject, time]);
 
   function loadFavorites() {
     AsyncStorage.getItem('favorites').then(response => {
@@ -100,7 +140,7 @@ function TeacherList() {
               <RNPickerSelect
                 style={pickerSelectStyles}
                 onValueChange={(value) => setWeek_day(value)}
-                items={subjectList}
+                items={weekdayList}
                 placeholder={{ label: "Selecione", value: null }}
               />
             </View>
@@ -109,18 +149,15 @@ function TeacherList() {
               <Text style={styles.label}>
                 Horário
                 </Text>
-              <TextInput
-                style={styles.input}
-                value={time}
-                onChangeText={text => setTime(text)}
-                placeholder="Qual horário?"
-                placeholderTextColor="#C1BCCC"
+
+              <RNPickerSelect
+                style={pickerSelectStyles}
+                onValueChange={(value) => setTime(value)}
+                items={timeList}
+                placeholder={{ label: "Selecione", value: null }}
               />
             </View>
           </View>
-          {/* <RectButton onPress={handleFiltersSubmit} style={styles.submitButton}>
-            <Text style={styles.submitButtonText}>Filtrar</Text>
-          </RectButton> */}
         </View>
         )}
       </PageHeader>

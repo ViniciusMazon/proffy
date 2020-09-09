@@ -18,9 +18,9 @@ function GiveClasses() {
   const [name, setName] = useState('Vinicius');
   const [surname, setSurname] = useState('Mazon');
   const [subject, setSubject] = useState('Inglês');
-  const [whatsapp, setWhatsapp] = useState('77 99999999');
-  const [bio, setBio] = useState('As vezes não sei nem onde eu tô, mas consigo me localizar facilmente em qualquer lugar. Tenho memória fotográfica e nunca fico perdido.Eu ensino a galera como não se perder na vida, com lições geográficas simples pra você nunca mais precisar de mapa na sua bela vida.');
-  const [cost, setCost] = useState('48');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [bio, setBio] = useState('');
+  const [cost, setCost] = useState('');
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: '', to: '' }
   ]);
@@ -61,6 +61,12 @@ function GiveClasses() {
   }
 
   function handleSaveRegister() {
+    const data ={
+      whatsapp,
+      bio,
+      scheduleItems
+    }
+    console.log(data);
     setIsCompleted(true);
   }
 
@@ -119,6 +125,7 @@ function GiveClasses() {
               onChangeText={text => setWhatsapp(text)}
               placeholder="WhatsApp"
               placeholderTextColor="#C1BCCC"
+              keyboardType="phone-pad"
             />
 
             <Text style={styles.label}>
@@ -154,6 +161,7 @@ function GiveClasses() {
               onChangeText={text => setCost(text)}
               placeholder={cost}
               placeholderTextColor="#C1BCCC"
+              keyboardType="decimal-pad"
             />
           </View>
 
