@@ -12,12 +12,23 @@ import purpleHeartIcon from '../../assets/images/icons/purple-heart.svg';
 
 import './styles.css';
 
+interface IUser {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
+
 function Landing() {
   const history = useHistory();
+  const [user, setUser] = useState<IUser>();
   const [totalConnections, setTotalConnections] = useState(0);
 
   useEffect(() => {
-    async function init() {
+    async function getTotalConnections() {
       const token = sessionStorage.getItem('proffy_token');
       const response = await api.get('/connections', { headers: { authorization: token } });
       if (response.status === 200) {
@@ -25,7 +36,14 @@ function Landing() {
       }
     }
 
-    init();
+    function getStoragedUserData() {
+      const data = localStorage.getItem('proffy_user');
+      const userData = JSON.parse(String(data));
+      setUser(userData);
+    }
+
+    getStoragedUserData();
+    getTotalConnections();
   }, []);
 
   function handleLogOff() {
@@ -40,7 +58,7 @@ function Landing() {
         <div className="page-landing-header">
           <Link className="profile" to="/profile">
             <img src="https://avatars3.githubusercontent.com/u/38103866?s=460&u=244951efa29035b28d90d168c50cd497cde3b9d5&v=4" alt="Profile image" />
-            <p>Vinicius Mazon</p>
+            <p>{user?.name} {user?.surname}</p>
           </Link>
           <div className="logoff-button" onClick={handleLogOff}>
             <img src={logoffIcon} alt="Fazer logoff" />
