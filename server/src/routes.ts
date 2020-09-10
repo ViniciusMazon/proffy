@@ -8,6 +8,7 @@ const routes = Router();
 
 routes.post('/session', sessionController.create);
 routes.post('/registration', usersController.create);
+routes.get('/user/:email', sessionController.authenticate, usersController.show);
 routes.post('/forgot-password', sessionController.forgotPassword);
 routes.post('/reset-password', sessionController.resetPassword);
 routes.post('/classes', sessionController.authenticate, classesController.store);
