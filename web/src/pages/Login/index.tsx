@@ -38,6 +38,13 @@ function Login() {
     const token = response.data;
 
     if (response.status === 200) {
+      const user = await api.get(`/user/${email}`, { headers: { authorization: token.authorization } });
+      if (response.status === 200) {
+        localStorage.setItem('proffy_user', JSON.stringify(user.data));
+      } else {
+        toast.error('Ocorreu um erro, tente novamente mais tarde!');
+        return;
+      }
 
       if (isRememberMe) {
         localStorage.setItem('proffy_remember', token.authorization)
