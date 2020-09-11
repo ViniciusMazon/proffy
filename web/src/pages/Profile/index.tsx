@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -12,17 +12,44 @@ import api from '../../services/api';
 
 function Profile() {
   const history = useHistory();
+  const token = sessionStorage.getItem('proffy_token');
+  const [userId, setUserId] = useState(0);
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   const [avatar, setAvatar] = useState('');
   const [email, setEmail] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [bio, setBio] = useState('');
+
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: '', to: '' }
   ]);
+
+
+  useEffect(() => {
+    const data = localStorage.getItem('proffy_user');
+    const user = JSON.parse(String(data));
+    setUserId(user.id);
+    setAvatar(user.avatar);
+    setName(user.name);
+    setSurname(user.surname);
+    setEmail(user.email);
+    setWhatsapp(user.whatsapp);
+    setBio(user.bio);
+  }, []);
+
+  useEffect(() => {
+    async function getClassData() {
+      const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
+      setSubject(data.subject);
+      setCost(data.cost);
+      setScheduleItems(data.schedule);
+    }
+
+    getClassData();
+  }, [token, userId]);
 
   function addNewScheduleItem() {
     setScheduleItems([...scheduleItems, { week_day: 0, from: '', to: '' }]);
@@ -42,7 +69,6 @@ function Profile() {
 
   function handleSaveChanges(e: FormEvent) {
     e.preventDefault();
-    const token = sessionStorage.getItem('proffy_token');
     if (!token) {
       toast.error('Sua sessão expirou, você será redirecionado');
       setTimeout(() => {
@@ -52,6 +78,7 @@ function Profile() {
     }
 
     api.post('/classes', {
+      id: userId,
       name,
       surname,
       avatar,
@@ -63,6 +90,17 @@ function Profile() {
     }, {
       headers: { authorization: token }
     }).then(() => {
+      sessionStorage.setItem('proffy_user', JSON.stringify({
+        id: userId,
+        name,
+        surname,
+        avatar,
+        whatsapp,
+        bio,
+        subject,
+        cost: Number(cost),
+        schedule: scheduleItems
+      }));
       toast.error('Cadastro realizado com sucesso, você será redirecionado');
       setTimeout(() => {
         history.push('/');
@@ -76,9 +114,9 @@ function Profile() {
   return (
     <div id="page-profile" className="container">
       <ProfileHeader
-        name="Vinicius Mazon"
+        name={`${name} ${surname}`}
         subject="Inglês"
-        avatar="https://github.com/viniciusmazon.png"
+        avatar={avatar}
       />
 
       <main>
