@@ -42,7 +42,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
       <p>
         {teacher.bio}
       </p>
-      <div className="teacher-schedule">
+      {/* <div className="teacher-schedule">
         {teacher.schedule.map(schedule => (
           <span>
             <p>Dia</p>
@@ -51,7 +51,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
             <strong>{schedule.from}h - {schedule.to}h</strong>
           </span>
         ))}
-      </div>
+      </div> */}
       <footer>
         <p>
           Preço/hora
