@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, Image, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { RectButton, TextInput, BorderlessButton } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import api from '../../services/api';
 
 import alertIcon from '../../assets/images/icons/alert.png';
 import backIcon from '../../assets/images/icons/back.png';
@@ -12,14 +14,34 @@ import styles from './styles';
 import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 import SuccessPage from '../../components/SuccessPage';
 
+interface IUser {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
+interface IParams {
+  user: IUser;
+  token: string;
+}
+
 function GiveClasses() {
   const { goBack } = useNavigation();
+  const route = useRoute();
+  const routeParams = route.params as IParams;
+  const token = routeParams.token;
+
   const [isCompleted, setIsCompleted] = useState(false);
-  const [name, setName] = useState('Vinicius');
-  const [surname, setSurname] = useState('Mazon');
-  const [subject, setSubject] = useState('Inglês');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [bio, setBio] = useState('');
+  const [userId, setUserId] = useState(routeParams.user.id);
+  const [name, setName] = useState(routeParams.user.name);
+  const [avatar, setAvatar] = useState(routeParams.user.avatar);
+  const [surname, setSurname] = useState(routeParams.user.surname);
+  const [whatsapp, setWhatsapp] = useState(routeParams.user.whatsapp);
+  const [bio, setBio] = useState(routeParams.user.bio);
+  const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: '', to: '' }
@@ -39,6 +61,18 @@ function GiveClasses() {
     { label: 'Sexta', value: 5 },
     { label: 'Sábado', value: 6 },
   ];
+
+  useEffect(() => {
+    async function getClassData() {
+      const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
+      setSubject(data.subject);
+      setCost(data.cost);
+      setScheduleItems(data.schedule);
+      console.log(data)
+    }
+
+    getClassData();
+  }, []);
 
   function handleNavigateBack() {
     goBack();
@@ -61,13 +95,30 @@ function GiveClasses() {
   }
 
   function handleSaveRegister() {
-    const data ={
+    api.post('/classes', {
+      id: userId,
+      name,
+      surname,
       whatsapp,
       bio,
-      scheduleItems
-    }
-    console.log(data);
-    setIsCompleted(true);
+      subject,
+      cost: Number(cost),
+      schedule: scheduleItems
+    }, {
+      headers: { authorization: token }
+    }).then(async () => {
+      await AsyncStorage.setItem('proffy_user', JSON.stringify({
+        id: userId,
+        name,
+        surname,
+        whatsapp,
+        bio,
+        subject,
+        cost: Number(cost),
+        schedule: scheduleItems
+      }));
+      setIsCompleted(true);
+    });
   }
 
   if (isCompleted) {
@@ -107,7 +158,7 @@ function GiveClasses() {
 
             <View style={styles.avatarContainer}>
               <Image
-                source={{ uri: 'https://github.com/viniciusmazon.png' }}
+                source={{ uri: avatar }}
                 style={styles.avatar}
               />
               <View>
@@ -123,7 +174,7 @@ function GiveClasses() {
               style={styles.input}
               value={whatsapp}
               onChangeText={text => setWhatsapp(text)}
-              placeholder="WhatsApp"
+              placeholder={whatsapp}
               placeholderTextColor="#C1BCCC"
               keyboardType="phone-pad"
             />
@@ -159,7 +210,7 @@ function GiveClasses() {
               style={styles.input}
               value={cost}
               onChangeText={text => setCost(text)}
-              placeholder={cost}
+              placeholder={String(cost)}
               placeholderTextColor="#C1BCCC"
               keyboardType="decimal-pad"
             />
@@ -174,7 +225,7 @@ function GiveClasses() {
             </View>
 
             {scheduleItems.map((scheduleItem, index) => (
-              <>
+              <View nativeID={String(index)}>
                 <Text style={styles.label}> Dia da semana</Text>
                 <RNPickerSelect
                   style={pickerSelectStyles}
@@ -210,7 +261,7 @@ function GiveClasses() {
                     <Text style={styles.deleteLineButtonText}>Excluir horário</Text>
                   </RectButton>
                 </View>
-              </>
+              </View>
             ))}
 
           </View>
