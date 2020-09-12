@@ -12,6 +12,7 @@ import styles from './styles';
 
 function Favorites() {
   const [favorites, setFavorites] = useState([]);
+  const totalFavorites = favorites.length;
 
   function loadFavorites() {
     AsyncStorage.getItem('favorites').then(response => {
@@ -32,7 +33,7 @@ function Favorites() {
       name="Estudar"
       title="Meus proffys Favoritos"
       icon={favoriteIcon}
-      iconText="1 proffy"
+      iconText={`${totalFavorites} proffy`}
       />
       <ScrollView
         style={styles.teacherList}
