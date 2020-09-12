@@ -60,6 +60,14 @@ function Login() {
     const token = response.data;
 
     if (response.status === 200) {
+      const user = await api.get(`/user/${email}`, { headers: { authorization: token.authorization } });
+      if (user.status === 200) {
+        await AsyncStorage.setItem('proffy_user', JSON.stringify(user.data));
+      } else {
+        alert('Ocorreu um erro inesperado, tente novamente mais tarde!');
+        return;
+      }
+
       if (toggleCheckBox) {
         await AsyncStorage.setItem('proffy_remember', token.authorization);
       }
