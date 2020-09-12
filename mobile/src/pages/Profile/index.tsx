@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Text, View, ImageBackground, Image, ScrollView } from 'react-native';
 import { RectButton, TextInput, BorderlessButton } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import api from '../../services/api';
 
 import giveClassesBgImage from '../../assets/images/give-classes-background.png';
 import backIcon from '../../assets/images/icons/back.png';
@@ -11,19 +13,49 @@ import logoImg from '../../assets/images/logo.png';
 import styles from './styles';
 import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 
+interface IUser {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
+interface IParams {
+  user: IUser;
+  token: string;
+}
+
 function Profile() {
   const { goBack, navigate } = useNavigation();
+  const route = useRoute();
+  const routeParams = route.params as IParams;
+  const token = routeParams.token;
 
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [bio, setBio] = useState('');
+  const [userId, setUserId] = useState(routeParams.user.id);
+  const [name, setName] = useState(routeParams.user.name);
+  const [surname, setSurname] = useState(routeParams.user.surname);
+  const [email, setEmail] = useState(routeParams.user.email);
+  const [whatsapp, setWhatsapp] = useState(routeParams.user.whatsapp);
+  const [bio, setBio] = useState(routeParams.user.bio);
+  const [avatar, setAvatar] = useState(routeParams.user.avatar);
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: '', to: '' }
   ]);
+
+  useEffect(() => {
+    async function getClassData() {
+      const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
+      setSubject(data.subject);
+      setCost(data.cost);
+      setScheduleItems(data.schedule);
+    }
+
+    getClassData();
+  }, []);
 
   const subjectsList = [
     { label: 'Português', value: 'Português' },
@@ -39,6 +71,8 @@ function Profile() {
     { label: 'Sexta', value: 5 },
     { label: 'Sábado', value: 6 },
   ];
+
+
 
   function handleNavigateBack() {
     goBack();
@@ -61,16 +95,32 @@ function Profile() {
   }
 
   function handleSaveChanges() {
-    const data = {
+      api.post('/classes', {
+      id: userId,
       name,
       surname,
-      email,
+      avatar,
       whatsapp,
       bio,
-      scheduleItems,
-    }
-    console.log(data);
-    navigate('Landing');
+      subject,
+      cost: Number(cost),
+      schedule: scheduleItems
+    }, {
+      headers: { authorization: token }
+    }).then(async () => {
+      await AsyncStorage.setItem('proffy_user', JSON.stringify({
+        id: userId,
+        name,
+        surname,
+        avatar,
+        whatsapp,
+        bio,
+        subject,
+        cost: Number(cost),
+        schedule: scheduleItems
+      }));
+      navigate('Landing');
+    });
   }
 
   return (
@@ -89,11 +139,11 @@ function Profile() {
         style={styles.header}
       >
         <Image
-          source={{ uri: 'https://github.com/viniciusmazon.png' }}
+          source={{ uri: avatar }}
           style={styles.avatar}
         />
-        <Text style={styles.name}>Vinicius Mazon</Text>
-        <Text style={styles.subject}>Inglês</Text>
+        <Text style={styles.name}>{name} {surname}</Text>
+        <Text style={styles.subject}>{subject}</Text>
       </ImageBackground>
 
       <View style={styles.card}>
@@ -165,7 +215,7 @@ function Profile() {
             style={pickerSelectStyles}
             onValueChange={(value) => setSubject(value)}
             items={subjectsList}
-            placeholder={{ label: 'Selecione a matéria', value: null }}
+            placeholder={{ label: subject, value: subject }}
           />
 
           <Text style={styles.label}>
@@ -175,7 +225,7 @@ function Profile() {
             style={styles.input}
             value={cost}
             onChangeText={text => setCost(text)}
-            placeholder="Custo"
+            placeholder={String(cost)}
             placeholderTextColor="#C1BCCC"
             keyboardType="decimal-pad"
           />
