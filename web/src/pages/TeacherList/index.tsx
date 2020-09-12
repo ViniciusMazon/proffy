@@ -29,7 +29,6 @@ function TeacherList() {
       }
     });
 
-
     setTotalTeachers(data.length);
     setTeachers(data);
   }

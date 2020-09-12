@@ -33,13 +33,12 @@ function Login() {
 
   async function handlerSingUp(e: FormEvent) {
     e.preventDefault();
-    console.log(email, password);
     const response = await api.post('/session', { email, password });
     const token = response.data;
 
     if (response.status === 200) {
       const user = await api.get(`/user/${email}`, { headers: { authorization: token.authorization } });
-      if (response.status === 200) {
+      if (user.status === 200) {
         localStorage.setItem('proffy_user', JSON.stringify(user.data));
       } else {
         toast.error('Ocorreu um erro, tente novamente mais tarde!');
