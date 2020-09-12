@@ -12,12 +12,26 @@ import heartIcon from '../../assets/images/icons/heart.png';
 import logoffIcon from '../../assets/images/icons/logoff.png';
 import api from '../../services/api';
 
+interface IUser {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
+
+
 function Landing() {
   const { navigate } = useNavigation();
+
+  const [token, setToken] = useState('');
+  const [user, setUser] = useState<IUser>();
   const [totalConnections, setTotalConnections] = useState(0);
 
   useEffect(() => {
-    async function init() {
+    async function getTotalConnections() {
       const token = await AsyncStorage.getItem('proffy_token');
       const response = await api.get('/connections', { headers: { authorization: token } });
       if (response.status === 200) {
@@ -25,7 +39,18 @@ function Landing() {
       }
     }
 
-    init();
+    async function getStoragedUserData() {
+      const data = await AsyncStorage.getItem('proffy_user');
+      const userData = JSON.parse(String(data));
+      const tokenData = await AsyncStorage.getItem('proffy_token');
+      if (tokenData && userData) {
+        setToken(tokenData);
+        setUser(userData);
+      }
+    }
+
+    getStoragedUserData();
+    getTotalConnections();
   }, []);
 
 
@@ -36,11 +61,11 @@ function Landing() {
   }
 
   function handleNavigateToProfilePage() {
-    navigate('Profile');
+    navigate('Profile', { user, token });
   }
 
   function handleNavigateToGiveClassesPage() {
-    navigate('GiveClasses');
+    navigate('GiveClasses', { user, token });
   }
 
   function handleNavigateToStudyPages() {
@@ -56,10 +81,10 @@ function Landing() {
           onPress={handleNavigateToProfilePage}
         >
           <Image
-            source={{ uri: "https://avatars3.githubusercontent.com/u/38103866?s=460&u=244951efa29035b28d90d168c50cd497cde3b9d5&v=4" }}
+            source={{ uri: user?.avatar }}
             style={styles.profileAvatar}
           />
-          <Text style={styles.profileName}>Vinicius Mazon</Text>
+          <Text style={styles.profileName}>{user?.name} {user?.surname}</Text>
         </RectButton>
         <RectButton
           style={styles.logoffButton}

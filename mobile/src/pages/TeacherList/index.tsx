@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -14,6 +14,7 @@ import styles from './styles';
 import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 
 function TeacherList() {
+
   const subjectList = [
     { label: "Inglês", value: "Inglês" },
     { label: "Matemática", value: "Matemática" },
@@ -58,6 +59,7 @@ function TeacherList() {
   ];
 
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+  const [totalTeachers, setTotalTeachers] = useState(0);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [teachers, setTeachers] = useState([]);
 
@@ -101,6 +103,8 @@ function TeacherList() {
       },
       headers: { authorization: token }
     });
+
+    setTotalTeachers(response.data.length);
     setTeachers(response.data);
     setIsFiltersVisible(false);
   }
@@ -111,7 +115,7 @@ function TeacherList() {
         name="Estudar"
         title="Proffys disponíveis"
         icon={smileIcon}
-        iconText="32 proffys"
+        iconText={`${totalTeachers} proffys`}
         headerRight={(
           <BorderlessButton onPress={handleToggleFiltersVisible} style={styles.headerRightContainer}>
             <Feather name="filter" size={20} color="#04D361" />

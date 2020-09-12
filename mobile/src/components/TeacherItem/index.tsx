@@ -80,7 +80,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, favorited }) => {
         {teacher.bio}
       </Text>
 
-      <View style={styles.schedule}>
+      {/* <View style={styles.schedule}>
         <View style={styles.scheduleLegend}>
           <Text style={styles.scheduleLegendText}>Dia</Text>
           <Text style={styles.scheduleLegendText}>Horário</Text>
@@ -92,7 +92,7 @@ const TeacherItem: React.FC<TeacherItemProps> = ({ teacher, favorited }) => {
             <Text style={styles.scheduleText}>{item.from}h - {item.to}h</Text>
           </View>
         ))}
-      </View>
+      </View> */}
 
       <View style={styles.footer}>
         <Text style={styles.price}>
