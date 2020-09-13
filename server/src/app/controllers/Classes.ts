@@ -96,11 +96,25 @@ class Classes {
 
   async show(req: Request, res: Response) {
     try {
-      const classes = await classesModel.getClassScheduleById(Number(req.params.id));
+      const classes = await classesModel.getClassScheduleByUserId(Number(req.params.id));
       return res.status(200).json(classes);
     } catch (error) {
       return res.status(400).json({ message: 'Ocorreu um erro inesperado, tente novamente mais tarde!' })
     }
+  }
+
+  async delete(req: Request, res: Response) {
+    const { classId, weekDay } = req.params;
+    const classSchedule = await classesModel.getClassScheduleByClassId(Number(classId));
+    if (classSchedule) {
+      classSchedule.schedule.map(async (scheduleItem) => {
+        if (Number(scheduleItem.week_day) === Number(weekDay)) {
+          await classesModel.destroy(Number(weekDay));
+        }
+      });
+      return res.status(200).send();
+    }
+    return res.status(400).json({ message: 'Não foi possível encontrar uma classe' });
   }
 }
 
