@@ -166,8 +166,8 @@ function Profile() {
             </legend>
 
             {scheduleItems.map((scheduleItem, index) => (
-              <>
-                <div key={scheduleItem.week_day} className="schedule-item">
+              <div key={scheduleItem.week_day}>
+                <div className="schedule-item">
                   <Select
                     name="week_day"
                     label="Dia da semana"
@@ -203,7 +203,7 @@ function Profile() {
                   <button type="button">Excluir horário</button>
                   <span />
                 </div>
-              </>
+              </div>
             ))}
           </fieldset>
 

@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -20,8 +20,15 @@ function ResetPassword(props: matchProps) {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-  async function handleResetPassword(e: FormEvent) {
+  useEffect(() => {
+    if (password) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [password]);
 
+  async function handleResetPassword(e: FormEvent) {
     e.preventDefault();
 
     if (password !== passwordConfirm) {

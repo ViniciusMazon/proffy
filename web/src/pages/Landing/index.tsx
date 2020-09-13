@@ -57,7 +57,7 @@ function Landing() {
       <div id="page-landing-content">
         <div className="page-landing-header">
           <Link className="profile" to="/profile">
-            <img src="https://avatars3.githubusercontent.com/u/38103866?s=460&u=244951efa29035b28d90d168c50cd497cde3b9d5&v=4" alt="Profile image" />
+            <img src={user?.avatar} alt="Imagem de perfil do usuário" />
             <p>{user?.name} {user?.surname}</p>
           </Link>
           <div className="logoff-button" onClick={handleLogOff}>
