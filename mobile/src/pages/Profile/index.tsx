@@ -40,6 +40,8 @@ function Profile() {
   const [whatsapp, setWhatsapp] = useState(routeParams.user.whatsapp);
   const [bio, setBio] = useState(routeParams.user.bio);
   const [avatar, setAvatar] = useState(routeParams.user.avatar);
+
+  const [classId, setClassId] = useState(0);
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
   const [scheduleItems, setScheduleItems] = useState([
@@ -49,6 +51,7 @@ function Profile() {
   useEffect(() => {
     async function getClassData() {
       const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
+      setClassId(data.id);
       setSubject(data.subject);
       setCost(String(data.cost));
       setScheduleItems(data.schedule);
@@ -56,6 +59,16 @@ function Profile() {
 
     getClassData();
   }, []);
+
+  async function handleDeleteSchedule(weekDay: number) {
+    await api.delete(`classes/${classId}/${weekDay}`, { headers: { authorization: token } });
+    const newScheduleItems = scheduleItems.filter(scheduleItem => {
+      if (scheduleItem.week_day !== weekDay) {
+        return scheduleItem;
+      }
+    });
+    setScheduleItems(newScheduleItems);
+  }
 
   const subjectsList = [
     { label: 'Português', value: 'Português' },
@@ -246,7 +259,7 @@ function Profile() {
                 style={pickerSelectStyles}
                 onValueChange={(value) => setScheduleItemValue(index, 'week_day', value)}
                 items={weekDaysList}
-                placeholder={{ label: 'Selecione a dia da semana', value: scheduleItem.week_day }}
+                placeholder={{ label: 'Dia da semana', value: scheduleItem.week_day }}
               />
               <View style={styles.inputGroup}>
                 <View style={styles.inputBlock}>
@@ -272,7 +285,7 @@ function Profile() {
               </View>
               <View style={styles.footerSeparator}>
                 <View style={styles.line} />
-                <RectButton style={styles.deleteLineButton}>
+                <RectButton style={styles.deleteLineButton} onPress={() => handleDeleteSchedule(scheduleItem.week_day)}>
                   <Text style={styles.deleteLineButtonText}>Excluir horário</Text>
                 </RectButton>
               </View>
