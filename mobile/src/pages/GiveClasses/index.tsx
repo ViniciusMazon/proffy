@@ -66,9 +66,8 @@ function GiveClasses() {
     async function getClassData() {
       const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
       setSubject(data.subject);
-      setCost(data.cost);
+      setCost(String(data.cost));
       setScheduleItems(data.schedule);
-      console.log(data)
     }
 
     getClassData();
@@ -225,7 +224,7 @@ function GiveClasses() {
             </View>
 
             {scheduleItems.map((scheduleItem, index) => (
-              <View nativeID={String(index)}>
+              <View key={index} nativeID={String(index)}>
                 <Text style={styles.label}> Dia da semana</Text>
                 <RNPickerSelect
                   style={pickerSelectStyles}

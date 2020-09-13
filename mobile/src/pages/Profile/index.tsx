@@ -50,7 +50,7 @@ function Profile() {
     async function getClassData() {
       const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
       setSubject(data.subject);
-      setCost(data.cost);
+      setCost(String(data.cost));
       setScheduleItems(data.schedule);
     }
 
@@ -95,7 +95,7 @@ function Profile() {
   }
 
   function handleSaveChanges() {
-      api.post('/classes', {
+    api.post('/classes', {
       id: userId,
       name,
       surname,
@@ -240,7 +240,7 @@ function Profile() {
           </View>
 
           {scheduleItems.map((scheduleItem, index) => (
-            <>
+            <View key={index}>
               <Text style={styles.label}> Dia da semana</Text>
               <RNPickerSelect
                 style={pickerSelectStyles}
@@ -276,7 +276,7 @@ function Profile() {
                   <Text style={styles.deleteLineButtonText}>Excluir horário</Text>
                 </RectButton>
               </View>
-            </>
+            </View>
           ))}
 
         </View>
