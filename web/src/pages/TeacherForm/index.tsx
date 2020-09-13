@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -13,17 +13,41 @@ import api from '../../services/api';
 
 function TeacherForm() {
   const history = useHistory();
-  const [name, setName] = useState('Vinicius Mazon');
-  const [avatar, setAvatar] = useState('https://github.com/viniciusmazon.png');
+  const token = sessionStorage.getItem('proffy_token');
+
+  const [userId, setUserId] = useState(0);
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [avatar, setAvatar] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [bio, setBio] = useState('');
-
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
-
   const [scheduleItems, setScheduleItems] = useState([
     { week_day: 0, from: '', to: '' }
   ]);
+
+  useEffect(() => {
+    const data = localStorage.getItem('proffy_user');
+    const user = JSON.parse(String(data));
+    setUserId(user.id);
+    setAvatar(user.avatar);
+    setName(user.name);
+    setSurname(user.surname);
+    setWhatsapp(user.whatsapp);
+    setBio(user.bio);
+  }, []);
+
+  useEffect(() => {
+    async function getClassData() {
+      const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
+      setSubject(data.subject);
+      setCost(data.cost);
+      setScheduleItems(data.schedule);
+    }
+
+    getClassData();
+  }, [token, userId]);
 
   function addNewScheduleItem() {
     setScheduleItems([...scheduleItems, { week_day: 0, from: '', to: '' }]);
@@ -53,7 +77,9 @@ function TeacherForm() {
     }
 
     api.post('/classes', {
+      id: userId,
       name,
+      surname,
       avatar,
       whatsapp,
       bio,
@@ -63,6 +89,17 @@ function TeacherForm() {
     }, {
       headers: { authorization: token }
     }).then(() => {
+      sessionStorage.setItem('proffy_user', JSON.stringify({
+        id: userId,
+        name,
+        surname,
+        avatar,
+        whatsapp,
+        bio,
+        subject,
+        cost: Number(cost),
+        schedule: scheduleItems
+      }));
       toast.error('Cadastro realizado com sucesso, você será redirecionado');
       setTimeout(() => {
         history.push('/');
@@ -90,7 +127,7 @@ function TeacherForm() {
             <span>
               <div className="teacher-profile">
                 <img src={avatar} alt={name} />
-                <strong>{name}</strong>
+                <strong>{name} {surname}</strong>
               </div>
               <Input name="whatsapp" label="WhatsApp" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} />
             </span>

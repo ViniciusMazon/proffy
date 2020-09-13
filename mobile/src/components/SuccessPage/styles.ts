@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 24,
-    width: 182,
+    width: 200,
     fontFamily: 'Archivo_700Bold',
     textAlign: 'center',
     fontSize: 32,
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   },
   description: {
     marginTop: 16,
-    width: 277,
+    width: 169,
     textAlign: 'center',
     fontFamily: 'Poppins_400Regular',
     fontSize: 14,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     color: '#D4C2FF',
   },
   okButton: {
-    marginTop: 200,
+    marginTop: 150,
     width: 294,
     backgroundColor: '#04D361',
     height: 58,

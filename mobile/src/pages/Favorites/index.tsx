@@ -6,10 +6,13 @@ import { useFocusEffect } from '@react-navigation/native'
 
 import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
+
+import favoriteIcon from '../../assets/images/icons/favorite.png';
 import styles from './styles';
 
 function Favorites() {
   const [favorites, setFavorites] = useState([]);
+  const totalFavorites = favorites.length;
 
   function loadFavorites() {
     AsyncStorage.getItem('favorites').then(response => {
@@ -26,7 +29,12 @@ function Favorites() {
 
   return (
     <View style={styles.container}>
-      <PageHeader title="Meus proffys favoritos" />
+      <PageHeader
+      name="Estudar"
+      title="Meus proffys Favoritos"
+      icon={favoriteIcon}
+      iconText={`${totalFavorites} proffy`}
+      />
       <ScrollView
         style={styles.teacherList}
         contentContainerStyle={{

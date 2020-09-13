@@ -1,23 +1,80 @@
-import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, View } from 'react-native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, Text, View } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-community/async-storage'
+import RNPickerSelect from 'react-native-picker-select';
+import api from '../../services/api';
 
 import PageHeader from '../../components/PageHeader';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
 
+import smileIcon from '../../assets/images/icons/smile.png';
 import styles from './styles';
-import api from '../../services/api';
+import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 
 function TeacherList() {
+
+  const subjectList = [
+    { label: "Inglês", value: "Inglês" },
+    { label: "Matemática", value: "Matemática" },
+    { label: "História", value: "História" },
+  ];
+
+  const weekdayList = [
+    { label: "Domingo", value: 0 },
+    { label: "Segunda", value: 1 },
+    { label: "Terça", value: 2 },
+    { label: "Quarta", value: 3 },
+    { label: "Quinta", value: 4 },
+    { label: "Sexta", value: 5 },
+    { label: "Sábado", value: 6 },
+  ];
+
+  const timeList = [
+    { label: "00:00", value: '00:00' },
+    { label: "01:00", value: '01:00' },
+    { label: "02:00", value: '02:00' },
+    { label: "03:00", value: '03:00' },
+    { label: "04:00", value: '04:00' },
+    { label: "05:00", value: '05:00' },
+    { label: "06:00", value: '06:00' },
+    { label: "07:00", value: '07:00' },
+    { label: "08:00", value: '08:00' },
+    { label: "09:00", value: '09:00' },
+    { label: "10:00", value: '10:00' },
+    { label: "11:00", value: '11:00' },
+    { label: "12:00", value: '12:00' },
+    { label: "13:00", value: '13:00' },
+    { label: "14:00", value: '14:00' },
+    { label: "15:00", value: '15:00' },
+    { label: "16:00", value: '16:00' },
+    { label: "17:00", value: '17:00' },
+    { label: "18:00", value: '18:00' },
+    { label: "19:00", value: '19:00' },
+    { label: "20:00", value: '20:00' },
+    { label: "21:00", value: '21:00' },
+    { label: "22:00", value: '22:00' },
+    { label: "23:00", value: '23:00' },
+  ];
+
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+  const [totalTeachers, setTotalTeachers] = useState(0);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [teachers, setTeachers] = useState([]);
 
   const [subject, setSubject] = useState('');
   const [week_day, setWeek_day] = useState('');
   const [time, setTime] = useState('');
+
+  useEffect(() => {
+    if (week_day !== '' && subject !== '' && time !== '') {
+      handleFiltersSubmit();
+      setWeek_day('');
+      setSubject('');
+      setTime('');
+    }
+  }, [week_day, subject, time]);
 
   function loadFavorites() {
     AsyncStorage.getItem('favorites').then(response => {
@@ -46,6 +103,8 @@ function TeacherList() {
       },
       headers: { authorization: token }
     });
+
+    setTotalTeachers(response.data.length);
     setTeachers(response.data);
     setIsFiltersVisible(false);
   }
@@ -53,10 +112,15 @@ function TeacherList() {
   return (
     <View style={styles.container}>
       <PageHeader
+        name="Estudar"
         title="Proffys disponíveis"
+        icon={smileIcon}
+        iconText={`${totalTeachers} proffys`}
         headerRight={(
-          <BorderlessButton onPress={handleToggleFiltersVisible}>
-            <Feather name="filter" size={20} color="#FFF" />
+          <BorderlessButton onPress={handleToggleFiltersVisible} style={styles.headerRightContainer}>
+            <Feather name="filter" size={20} color="#04D361" />
+            <Text style={styles.headerRightText}>Filtrar por dia, hora e matéria</Text>
+            <Feather name={isFiltersVisible ? "chevron-up" : "chevron-down"} size={20} color="#A380F6" />
           </BorderlessButton>
         )}
       >
@@ -64,12 +128,11 @@ function TeacherList() {
           <Text style={styles.label}>
             Matéria
             </Text>
-          <TextInput
-            style={styles.input}
-            value={subject}
-            onChangeText={text => setSubject(text)}
-            placeholder="Qual a matéria?"
-            placeholderTextColor="#C1BCCC"
+          <RNPickerSelect
+            style={pickerSelectStyles}
+            onValueChange={(value) => setSubject(value)}
+            items={subjectList}
+            placeholder={{ label: "Selecione", value: null }}
           />
 
           <View style={styles.inputGroup}>
@@ -77,12 +140,12 @@ function TeacherList() {
               <Text style={styles.label}>
                 Dia da semana
                 </Text>
-              <TextInput
-                style={styles.input}
-                value={week_day}
-                onChangeText={text => setWeek_day(text)}
-                placeholder="Qual o dia?"
-                placeholderTextColor="#C1BCCC"
+
+              <RNPickerSelect
+                style={pickerSelectStyles}
+                onValueChange={(value) => setWeek_day(value)}
+                items={weekdayList}
+                placeholder={{ label: "Selecione", value: null }}
               />
             </View>
 
@@ -90,18 +153,15 @@ function TeacherList() {
               <Text style={styles.label}>
                 Horário
                 </Text>
-              <TextInput
-                style={styles.input}
-                value={time}
-                onChangeText={text => setTime(text)}
-                placeholder="Qual horário?"
-                placeholderTextColor="#C1BCCC"
+
+              <RNPickerSelect
+                style={pickerSelectStyles}
+                onValueChange={(value) => setTime(value)}
+                items={timeList}
+                placeholder={{ label: "Selecione", value: null }}
               />
             </View>
           </View>
-          <RectButton onPress={handleFiltersSubmit} style={styles.submitButton}>
-            <Text style={styles.submitButtonText}>Filtrar</Text>
-          </RectButton>
         </View>
         )}
       </PageHeader>

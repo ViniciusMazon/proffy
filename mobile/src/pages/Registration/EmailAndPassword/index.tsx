@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { RectButton } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons'
 
+import SuccessPage from '../../../components/SuccessPage';
 import backIcon from '../../../assets/images/icons/back.png'
 import styles from './styles';
 import api from '../../../services/api';
@@ -12,6 +13,8 @@ function EmailAndPassword() {
   const route = useRoute();
   const routeParams: any = route.params;
   const { navigate, goBack } = useNavigation();
+
+  const [isRegistrationCompleted, setIsRegistrationCompleted] = useState(false);
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
@@ -44,68 +47,81 @@ function EmailAndPassword() {
 
     const response = await api.post('/registration', data);
     if (response.status === 201) {
-      navigate('Success');
+      setIsRegistrationCompleted(true);
     } else {
       console.log('ERRO');
     }
   }
 
-  return (
-    <KeyboardAvoidingView style={styles.container} behavior="position">
-      <View style={styles.header}>
-        <RectButton onPress={handleNavigateBack} style={styles.linkButton}>
-          <Image source={backIcon} />
-        </RectButton>
-        <View style={styles.dotContainer}>
-          <View style={[styles.dot, { backgroundColor: '#8257E5' }]} />
-          <View style={[styles.dot, { backgroundColor: '#C1BCCC' }]} />
-        </View>
-      </View>
-
-      <View>
-        <Text style={styles.title}>Crie sua conta gratuíta</Text>
-        <Text style={styles.description}>Basta preencher esses dados e você estará conosco.</Text>
-      </View>
-
-      <Text style={styles.subTitle}>02.  Email e Senha</Text>
-      <TextInput
-        style={[styles.input, { borderTopRightRadius: 8, borderTopLeftRadius: 8 }]}
-        placeholder="E-mail"
-        placeholderTextColor="#C1BCCC"
-        value={email}
-        onChangeText={text => setEmail(text)}
+  if (isRegistrationCompleted) {
+    return (
+      <SuccessPage
+        title="Cadastro concluído!"
+        message="Agora você faz parte da plataforma da Proffy"
+        redirectTo="Login"
+        buttonText="Fazer login"
       />
+    );
+  } else {
+    return (
+      <KeyboardAvoidingView style={styles.container} behavior="position">
+        <View style={styles.header}>
+          <RectButton onPress={handleNavigateBack} style={styles.linkButton}>
+            <Image source={backIcon} />
+          </RectButton>
+          <View style={styles.dotContainer}>
+            <View style={[styles.dot, { backgroundColor: '#8257E5' }]} />
+            <View style={[styles.dot, { backgroundColor: '#C1BCCC' }]} />
+          </View>
+        </View>
 
-      <View style={styles.passwordInputContainer}>
+        <View>
+          <Text style={styles.title}>Crie sua conta gratuíta</Text>
+          <Text style={styles.description}>Basta preencher esses dados e você estará conosco.</Text>
+        </View>
+
+        <Text style={styles.subTitle}>02.  Email e Senha</Text>
         <TextInput
-          secureTextEntry={!isPasswordVisible}
-          style={styles.input}
-          placeholder="Senha"
+          style={[styles.input, { borderTopRightRadius: 8, borderTopLeftRadius: 8 }]}
+          placeholder="E-mail"
           placeholderTextColor="#C1BCCC"
-          value={password}
-          onChangeText={text => setPassword(text)}
+          value={email}
+          onChangeText={text => setEmail(text)}
         />
-        <RectButton style={styles.passwordIcon} onPress={handleChangePasswordVisibility}>
-          <Ionicons
-            name={isPasswordVisible ? 'ios-eye-off' : 'ios-eye'}
-            size={25}
-            color={'#9C98A6'}
-          />
-        </RectButton>
-      </View>
 
-      <RectButton
-        style={[styles.okButton, { backgroundColor: isButtonActive ? '#04D361' : '#DCDCE5' }]}
-        onPress={handleNavigateNext}
-      >
-        <Text
-          style={[styles.okButtonText, { color: isButtonActive ? '#FFF' : '#9C98A6' }]}
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            secureTextEntry={!isPasswordVisible}
+            style={styles.input}
+            placeholder="Senha"
+            placeholderTextColor="#C1BCCC"
+            value={password}
+            onChangeText={text => setPassword(text)}
+          />
+          <RectButton style={styles.passwordIcon} onPress={handleChangePasswordVisibility}>
+            <Ionicons
+              name={isPasswordVisible ? 'ios-eye-off' : 'ios-eye'}
+              size={25}
+              color={'#9C98A6'}
+            />
+          </RectButton>
+        </View>
+
+        <RectButton
+          style={[styles.okButton, { backgroundColor: isButtonActive ? '#04D361' : '#DCDCE5' }]}
+          onPress={handleNavigateNext}
         >
-          Concluir cadastro
-           </Text>
-      </RectButton>
-    </KeyboardAvoidingView>
-  );
+          <Text
+            style={[styles.okButtonText, { color: isButtonActive ? '#FFF' : '#9C98A6' }]}
+          >
+            Concluir cadastro
+             </Text>
+        </RectButton>
+      </KeyboardAvoidingView>
+    );
+  }
 }
+
+
 
 export default EmailAndPassword;

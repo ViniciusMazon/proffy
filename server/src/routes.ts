@@ -8,10 +8,12 @@ const routes = Router();
 
 routes.post('/session', sessionController.create);
 routes.post('/registration', usersController.create);
+routes.get('/user/:email', sessionController.authenticate, usersController.show);
 routes.post('/forgot-password', sessionController.forgotPassword);
 routes.post('/reset-password', sessionController.resetPassword);
 routes.post('/classes', sessionController.authenticate, classesController.store);
 routes.get('/classes', sessionController.authenticate, classesController.index);
+routes.get('/classes/:id', sessionController.authenticate, classesController.show);
 routes.post('/connections', sessionController.authenticate, connectionsController.store);
 routes.get('/connections', sessionController.authenticate, connectionsController.index);
 

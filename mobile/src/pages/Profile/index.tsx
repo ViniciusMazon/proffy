@@ -1,31 +1,66 @@
-import React, { useState } from 'react';
-import { Text, View, ImageBackground, Image, TextInputComponent, ScrollView } from 'react-native';
-import { RectButton, TextInput } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Text, View, ImageBackground, Image, ScrollView } from 'react-native';
+import { RectButton, TextInput, BorderlessButton } from 'react-native-gesture-handler';
 import RNPickerSelect from 'react-native-picker-select';
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import api from '../../services/api';
 
 import giveClassesBgImage from '../../assets/images/give-classes-background.png';
+import backIcon from '../../assets/images/icons/back.png';
+import logoImg from '../../assets/images/logo.png';
 
 import styles from './styles';
 import pickerSelectStyles from '../../assets/styles/pickerSelectStyles';
 
+interface IUser {
+  id: number;
+  name: string;
+  surname: string;
+  email: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+}
+interface IParams {
+  user: IUser;
+  token: string;
+}
+
 function Profile() {
-  const { goBack } = useNavigation();
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [bio, setBio] = useState('');
+  const { goBack, navigate } = useNavigation();
+  const route = useRoute();
+  const routeParams = route.params as IParams;
+  const token = routeParams.token;
+
+  const [userId, setUserId] = useState(routeParams.user.id);
+  const [name, setName] = useState(routeParams.user.name);
+  const [surname, setSurname] = useState(routeParams.user.surname);
+  const [email, setEmail] = useState(routeParams.user.email);
+  const [whatsapp, setWhatsapp] = useState(routeParams.user.whatsapp);
+  const [bio, setBio] = useState(routeParams.user.bio);
+  const [avatar, setAvatar] = useState(routeParams.user.avatar);
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
-  const [weekday, setWeekDay] = useState('');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [scheduleItems, setScheduleItems] = useState([
+    { week_day: 0, from: '', to: '' }
+  ]);
+
+  useEffect(() => {
+    async function getClassData() {
+      const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
+      setSubject(data.subject);
+      setCost(String(data.cost));
+      setScheduleItems(data.schedule);
+    }
+
+    getClassData();
+  }, []);
 
   const subjectsList = [
     { label: 'Português', value: 'Português' },
-    { label: 'Matemárica', value: 'Matemárica' }
-  ]
+    { label: 'Matemática', value: 'Matemática' }
+  ];
 
   const weekDaysList = [
     { label: 'Domingo', value: 0 },
@@ -35,25 +70,80 @@ function Profile() {
     { label: 'Quinta', value: 4 },
     { label: 'Sexta', value: 5 },
     { label: 'Sábado', value: 6 },
-  ]
+  ];
+
+
 
   function handleNavigateBack() {
     goBack();
   }
 
+  function addNewScheduleItem() {
+    setScheduleItems([...scheduleItems, { week_day: 0, from: '', to: '' }]);
+  }
+
+  function setScheduleItemValue(position: number, field: string, value: string) {
+    const updatedScheduleItems = scheduleItems.map((scheduleItem, index) => {
+      if (index === position) {
+        return { ...scheduleItem, [field]: value }
+      }
+
+      return scheduleItem;
+    });
+
+    setScheduleItems(updatedScheduleItems);
+  }
+
+  function handleSaveChanges() {
+    api.post('/classes', {
+      id: userId,
+      name,
+      surname,
+      avatar,
+      whatsapp,
+      bio,
+      subject,
+      cost: Number(cost),
+      schedule: scheduleItems
+    }, {
+      headers: { authorization: token }
+    }).then(async () => {
+      await AsyncStorage.setItem('proffy_user', JSON.stringify({
+        id: userId,
+        name,
+        surname,
+        avatar,
+        whatsapp,
+        bio,
+        subject,
+        cost: Number(cost),
+        schedule: scheduleItems
+      }));
+      navigate('Landing');
+    });
+  }
+
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.topBar}>
+        <BorderlessButton onPress={handleNavigateBack}>
+          <Image source={backIcon} resizeMode="contain" />
+        </BorderlessButton>
+        <Text style={styles.topBarName}>Meu perfil</Text>
+        <Image source={logoImg} resizeMode="contain" />
+      </View>
+
       <ImageBackground
         resizeMode="contain"
         source={giveClassesBgImage}
         style={styles.header}
       >
         <Image
-          source={{ uri: 'https://github.com/viniciusmazon.png' }}
+          source={{ uri: avatar }}
           style={styles.avatar}
         />
-        <Text style={styles.name}>Vinicius Mazon</Text>
-        <Text style={styles.subject}>Inglês</Text>
+        <Text style={styles.name}>{name} {surname}</Text>
+        <Text style={styles.subject}>{subject}</Text>
       </ImageBackground>
 
       <View style={styles.card}>
@@ -89,6 +179,7 @@ function Profile() {
             onChangeText={text => setEmail(text)}
             placeholder="E-mail"
             placeholderTextColor="#C1BCCC"
+            keyboardType="email-address"
           />
 
           <Text style={styles.label}>
@@ -100,6 +191,7 @@ function Profile() {
             onChangeText={text => setWhatsapp(text)}
             placeholder="WhatsApp"
             placeholderTextColor="#C1BCCC"
+            keyboardType="phone-pad"
           />
 
           <Text style={styles.label}>
@@ -123,7 +215,7 @@ function Profile() {
             style={pickerSelectStyles}
             onValueChange={(value) => setSubject(value)}
             items={subjectsList}
-            placeholder={{ label: 'Selecione a matéria', value: null }}
+            placeholder={{ label: subject, value: subject }}
           />
 
           <Text style={styles.label}>
@@ -133,58 +225,67 @@ function Profile() {
             style={styles.input}
             value={cost}
             onChangeText={text => setCost(text)}
-            placeholder="Custo"
+            placeholder={String(cost)}
             placeholderTextColor="#C1BCCC"
+            keyboardType="decimal-pad"
           />
         </View>
 
         <View style={styles.fieldset}>
           <View style={styles.titleAndButton}>
             <Text style={styles.title}>Horários disponíveis</Text>
-            <RectButton style={styles.addButton}>
+            <RectButton style={styles.addButton} onPress={addNewScheduleItem}>
               <Text style={styles.addButtonText}>+ Novo</Text>
             </RectButton>
           </View>
-          <Text style={styles.label}> Dia da semana</Text>
-          <RNPickerSelect
-            style={pickerSelectStyles}
-            onValueChange={(value) => setWeekDay(value)}
-            items={weekDaysList}
-            placeholder={{ label: 'Selecione a dia da semana', value: null }}
-          />
-          <View style={styles.inputGroup}>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>
-                Das
-            </Text>
-              <TextInput
-                style={styles.input}
-                value={from}
-                onChangeText={text => setFrom(text)}
-                placeholder="Das"
-                placeholderTextColor="#C1BCCC"
+
+          {scheduleItems.map((scheduleItem, index) => (
+            <View key={index}>
+              <Text style={styles.label}> Dia da semana</Text>
+              <RNPickerSelect
+                style={pickerSelectStyles}
+                onValueChange={(value) => setScheduleItemValue(index, 'week_day', value)}
+                items={weekDaysList}
+                placeholder={{ label: 'Selecione a dia da semana', value: scheduleItem.week_day }}
               />
+              <View style={styles.inputGroup}>
+                <View style={styles.inputBlock}>
+                  <Text style={styles.label}>Das</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={scheduleItem.from}
+                    onChangeText={text => setScheduleItemValue(index, 'from', text)}
+                    placeholder="Das"
+                    placeholderTextColor="#C1BCCC"
+                  />
+                </View>
+                <View style={styles.inputBlock}>
+                  <Text style={styles.label}>Até</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={scheduleItem.to}
+                    onChangeText={text => setScheduleItemValue(index, 'to', text)}
+                    placeholder="Até"
+                    placeholderTextColor="#C1BCCC"
+                  />
+                </View>
+              </View>
+              <View style={styles.footerSeparator}>
+                <View style={styles.line} />
+                <RectButton style={styles.deleteLineButton}>
+                  <Text style={styles.deleteLineButtonText}>Excluir horário</Text>
+                </RectButton>
+              </View>
             </View>
-            <View style={styles.inputBlock}>
-              <Text style={styles.label}>
-                Até
-            </Text>
-              <TextInput
-                style={styles.input}
-                value={to}
-                onChangeText={text => setTo(text)}
-                placeholder="Até"
-                placeholderTextColor="#C1BCCC"
-              />
-            </View>
-          </View>
-          <View style={styles.footerSeparator}>
-            <View style={styles.line} />
-            <RectButton style={styles.deleteLineButton}>
-              <Text style={styles.deleteLineButtonText}> Excluir horário</Text>
-            </RectButton>
-          </View>
+          ))}
+
         </View>
+      </View>
+
+      <View style={styles.footer}>
+        <RectButton style={styles.footerButton} onPress={handleSaveChanges}>
+          <Text style={styles.footerButtonText}>Salvar alterações</Text>
+        </RectButton>
       </View>
     </ScrollView >
   );

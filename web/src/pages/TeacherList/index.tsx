@@ -10,7 +10,7 @@ import './styles.css';
 
 function TeacherList() {
   const [teachers, setTeachers] = useState([]);
-
+  const [totalTeachers, setTotalTeachers] = useState(0);
   const [subject, setSubject] = useState('');
   const [week_day, setWeekDay] = useState('');
   const [time, setTime] = useState('');
@@ -29,6 +29,7 @@ function TeacherList() {
       }
     });
 
+    setTotalTeachers(data.length);
     setTeachers(data);
   }
 
@@ -39,7 +40,7 @@ function TeacherList() {
         title="Estes são os proffys disponíveis "
         description="O primeiro passo, é preencher esse formulário de inscrição."
         icon={smileIcon}
-        iconDescription="Nós temos 32 professores."
+        iconDescription={`Nós temos ${totalTeachers} professores.`}
       >
         <form id="search-teachers" onSubmit={searchTeachers}>
           <Select
@@ -91,7 +92,7 @@ function TeacherList() {
           <TeacherItem key={teacher.id} teacher={teacher} />
         ))}
       </main>
-    </div>
+    </div >
   );
 }
 

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../../database/connections';
+import classesModel from '../models/Classes';
 import convertHourToMinutes from '../../utils/convertHourToMinutes';
 
 interface ScheduleItem {
@@ -11,7 +12,9 @@ interface ScheduleItem {
 class Classes {
   async store(req: Request, res: Response) {
     const {
+      id: user_id,
       name,
+      surname,
       avatar,
       whatsapp,
       bio,
@@ -23,20 +26,25 @@ class Classes {
     const trx = await db.transaction();
 
     try {
-      const insertedUsersIds = await trx('users').insert({
+      await trx('users').where('id', '=', user_id).update({
         name,
+        surname,
         avatar,
         whatsapp,
         bio
       });
-      const user_id = insertedUsersIds[0];
 
-      const insertedClassesId = await trx('classes').insert({
-        subject,
-        cost,
-        user_id
-      });
-      const class_id = insertedClassesId[0];
+      const classExists = await trx('classes').where('user_id', user_id);
+      if (classExists.length) {
+        await trx('classes').where('user_id', '=', user_id).update({ subject, cost });
+      } else {
+        await trx('classes').insert({ subject, cost, user_id });
+      }
+
+      const { id: class_id } = await trx.select('id').from('classes').where('user_id', user_id).first();
+
+      await trx('class_schedule').where('class_id', class_id).del();
+
       const classSchedule = schedule.map((scheduleItem: ScheduleItem) => {
         return {
           class_id,
@@ -82,9 +90,17 @@ class Classes {
       })
       .where('classes.subject', '=', subject)
       .join('users', 'classes.user_id', '=', 'users.id')
-      .select(['classes.*', 'users.*']);
-
+      .select(['classes.*', 'users.name', 'users.avatar', 'users.whatsapp', 'users.bio']);
     return res.json(classes);
+  }
+
+  async show(req: Request, res: Response) {
+    try {
+      const classes = await classesModel.getClassScheduleById(Number(req.params.id));
+      return res.status(200).json(classes);
+    } catch (error) {
+      return res.status(400).json({ message: 'Ocorreu um erro inesperado, tente novamente mais tarde!' })
+    }
   }
 }
 
