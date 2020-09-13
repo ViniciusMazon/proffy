@@ -21,6 +21,7 @@ function Profile() {
   const [whatsapp, setWhatsapp] = useState('');
   const [bio, setBio] = useState('');
 
+  const [classId, setClassId] = useState(0);
   const [subject, setSubject] = useState('');
   const [cost, setCost] = useState('');
   const [scheduleItems, setScheduleItems] = useState([
@@ -43,6 +44,7 @@ function Profile() {
   useEffect(() => {
     async function getClassData() {
       const { data } = await api(`/classes/${userId}`, { headers: { authorization: token } });
+      setClassId(data.id);
       setSubject(data.subject);
       setCost(data.cost);
       setScheduleItems(data.schedule);
@@ -65,6 +67,16 @@ function Profile() {
     });
 
     setScheduleItems(updatedScheduleItems);
+  }
+
+  async function handleDeleteSchedule(weekDay: number) {
+    await api.delete(`classes/${classId}/${weekDay}`, { headers: { authorization: token } });
+    const newScheduleItems = scheduleItems.filter(scheduleItem => {
+      if (scheduleItem.week_day !== weekDay) {
+        return scheduleItem;
+      }
+    });
+    setScheduleItems(newScheduleItems);
   }
 
   function handleSaveChanges(e: FormEvent) {
@@ -200,7 +212,7 @@ function Profile() {
                 </div>
                 <div className="schedule-item-delete">
                   <span />
-                  <button type="button">Excluir horário</button>
+                  <button type="button" onClick={() => handleDeleteSchedule(scheduleItem.week_day)}>Excluir horário</button>
                   <span />
                 </div>
               </div>
